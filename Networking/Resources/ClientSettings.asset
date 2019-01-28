@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5987b33d01ae0af46b3f683afa1b4695, type: 3}
+  m_Name: ClientSettings
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 1882635829629824, guid: 036d4a7dc6f0ac247b70256ebba78487,
+    type: 2}
+  proxyPrefab: {fileID: 1556123264861158, guid: 98197c06e73acc44caa7af9710708b6b,
+    type: 2}

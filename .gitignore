@@ -1,0 +1,9 @@
+*.pdb
+*.exe
+/release/
+/debug/
+*.ilk
+.pch
+.ipch
+.suo
+.cache
