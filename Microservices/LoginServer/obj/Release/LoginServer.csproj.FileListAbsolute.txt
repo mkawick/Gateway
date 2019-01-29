@@ -1,0 +1,10 @@
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\bin\Release\LoginServer.exe.config
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\bin\Release\LoginServer.exe
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\bin\Release\LoginServer.pdb
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\bin\Release\CommonLibrary.dll
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\bin\Release\Npgsql.dll
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\bin\Release\CommonLibrary.pdb
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\bin\Release\Npgsql.xml
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\obj\Release\LoginServer.csprojResolveAssemblyReference.cache
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\obj\Release\LoginServer.exe
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\LoginServer\obj\Release\LoginServer.pdb

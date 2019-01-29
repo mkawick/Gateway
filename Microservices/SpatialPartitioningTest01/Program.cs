@@ -34,6 +34,7 @@ namespace SpatialPartitioningTest01
     }
     class Program
     {
+        
         static void Main(string[] args)
         {
             int numAsteroids = 1000;
@@ -52,9 +53,25 @@ namespace SpatialPartitioningTest01
 
             partition.PrintCountPerCell();
 
-            Vector3 center = new Vector3(-100, 0, -100);
-            int dist = 1200;
-            List<SpaceObject> myList = partition.GetAll((int)center.x, (int)center.z, dist);
+            int successCount = 0;
+            int numTestRuns = 50;
+            for (int testCount = 0; testCount < numTestRuns; testCount++)
+            {
+                Vector3 center = new Vector3(rand.Next(-4000, 4000), 0, rand.Next(-4000, 4000));
+                int dist = rand.Next(400, 1800);
+                Console.WriteLine("Running capture test.. iteration {0}, x: {1}, z: {2}, dist: {3}", testCount, (int)center.x, (int)center.z, dist);
+                if (RunCaptureTest((int) center.x, (int) center.z, dist, ast, partition) == false)
+                {
+                    Console.WriteLine("**** failed **** iteration {0}, x: {1}, z: {2}, dist: {3}", testCount, (int)center.x, (int)center.z, dist);
+                }
+                else
+                {
+                    successCount++;
+                }
+
+                Console.WriteLine("Num successes: {0} out of {1} test runs", successCount, numTestRuns);
+            }
+           /* List<SpaceObject> myList = partition.GetAll((int)center.x, (int)center.z, dist);
 
             Console.WriteLine("printing close asteroids");
             Console.WriteLine("num close by partition is: {0}", myList.Count);
@@ -73,7 +90,7 @@ namespace SpatialPartitioningTest01
 
             
             int countAsteroids = GetNumAsteroidsClose(ast, (int)center.x, (int)center.z, dist);
-            Console.WriteLine("num close by dist is: {0}", countAsteroids);
+            Console.WriteLine("num close by dist is: {0}", countAsteroids);*/
 
 
             Console.WriteLine("Hello World!");
@@ -92,6 +109,66 @@ namespace SpatialPartitioningTest01
                 }
             }
             return count;
+        }
+        static bool RunCaptureTest(int centerX, int centerZ, int range, Asteroid[] ast, SpatialPartitionPattern.Grid partition)
+        {
+            Vector3 center = new Vector3(-100, 0, -100);
+            int dist = 1200;
+            List<SpaceObject> myList = partition.GetAll((int)center.x, (int)center.z, dist);
+
+           /* Console.WriteLine("printing close asteroids");
+            Console.WriteLine("num close by partition is: {0}", myList.Count);*/
+
+            foreach (var t in myList)
+            {
+                if (Vector3.DistanceSquared(center, t.position) < dist * dist)
+                {
+                 //   Console.WriteLine("valid vector");
+                }
+                else
+                {
+                 //   Console.WriteLine("**** invalid vector ****");
+                }
+            }
+
+
+            int countAsteroids = GetNumAsteroidsClose(ast, (int)center.x, (int)center.z, dist);
+           // Console.WriteLine("num close by dist is: {0}", countAsteroids);
+
+
+            if (countAsteroids == myList.Count)
+                return true;
+            return false;
+        }
+        static bool RunDeleteTest1(int centerX, int centerZ, int range, Asteroid[] ast, SpatialPartitionPattern.Grid partition)
+        {
+            partition.ClearAll();
+            partition.Add(ast[0].spaceObject);
+
+            Vector3 center = new Vector3(-100, 0, -100);
+            int dist = 1200;
+            List<SpaceObject> myList = partition.GetAll((int)center.x, (int)center.z, dist);
+
+        /*    foreach (var t in myList)
+            {
+                if (Vector3.DistanceSquared(center, t.position) < dist * dist)
+                {
+                    //   Console.WriteLine("valid vector");
+                }
+                else
+                {
+                    //   Console.WriteLine("**** invalid vector ****");
+                }
+            }
+
+
+            int countAsteroids = GetNumAsteroidsClose(ast, (int)center.x, (int)center.z, dist);*/
+            // Console.WriteLine("num close by dist is: {0}", countAsteroids);
+
+
+            if (countAsteroids == myList.Count)
+                return true;
+            return false;
         }
     }
 
@@ -112,6 +189,9 @@ namespace SpatialPartitionPattern
         //This is the actual grid, where a SpaceObject is in each cell
         //Each individual SpaceObject links to other SpaceObjects in the same cell
         SpaceObject[,] cells;
+        List<SpaceObject> recentlyAddedObjects;
+        List<SpaceObject> recentlyMovedObjects;
+        List<SpaceObject> recentlyDeletedObjects;
 
         public int RangeMin
         {
@@ -128,24 +208,31 @@ namespace SpatialPartitionPattern
             this.cellSize = cellSize;
             this.rangeMin = (int)-mapWidth;
             this.rangeMax = (int)mapWidth;
-            mapWidth *= 2;
+            /*mapWidth += cellSize;// need to allow off-by-one
+            mapWidth *= 2;*/
 
             numberOfCells = (int)mapWidth / cellSize;
 
             cells = new SpaceObject[numberOfCells, numberOfCells];
-          /*  for (int y = 0; y < numberOfCells; y++)
-            {
-                for (int x = 0; x < numberOfCells; x++)
-                {
-                    cells[x,y] 
-                }
-                Console.Write("\n");
-            }*/
+            recentlyAddedObjects = new List<SpaceObject>();
+            recentlyMovedObjects = new List<SpaceObject>();
+            recentlyDeletedObjects = new List<SpaceObject>();
         }
 
+        public void ClearAll()
+        {
+            for(int z=0; z< numberOfCells; z++ )
+            {
+                for(int x=0; x< numberOfCells; x++)
+                {
+                    cells[x, z] = null;
+                }
+            }
+            recentlyAddedObjects.Clear();
+            recentlyMovedObjects.Clear();
+            recentlyDeletedObjects.Clear();
+        }
         
-
-        //Add a unity to the grid
         public void Add(SpaceObject spaceObject)
         {
             //Determine which grid cell the SpaceObject is in
@@ -163,6 +250,39 @@ namespace SpatialPartitionPattern
                 //Set this soldier to be the previous soldier of the next soldier of this soldier (linked lists ftw)
                 spaceObject.next.prev = spaceObject;
             }
+            recentlyAddedObjects.Add(spaceObject);
+        }
+
+        public void Remove(SpaceObject spaceObject)
+        {
+            //Determine which grid cell the SpaceObject is in
+            int cellX = NormalizeCell(spaceObject.position.x);
+            int cellZ = NormalizeCell(spaceObject.position.z);
+
+            SpaceObject temp = cells[cellX, cellZ];
+
+            while (temp != null)
+            {
+                if(temp == spaceObject)
+                {
+                    recentlyDeletedObjects.Add(spaceObject);
+                    if (temp.prev != null)
+                    {
+                        temp.prev.next = temp.next;
+                        if (temp.next != null)
+                        {
+                            temp.next.prev = temp.prev;
+                        }
+                    }
+                    else
+                    {
+                        cells[cellX, cellZ] = temp.next;
+                        temp.next.prev = null;
+                    }
+                    break;
+                }
+                temp = temp.next;
+            }           
         }
 
         int NormalizeCell(float pos)
@@ -245,6 +365,7 @@ namespace SpatialPartitionPattern
 
             //Add it bacl to the grid at its new cell
             Add(spaceObject);
+            recentlyMovedObjects.Add(spaceObject);
         }
 
         private int AssignAndRangeCheck(int p, int range)

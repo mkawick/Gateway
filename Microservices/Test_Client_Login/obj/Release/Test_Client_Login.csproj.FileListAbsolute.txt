@@ -1,0 +1,8 @@
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Test_Client_Login\bin\Release\Test_Client_Login.exe.config
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Test_Client_Login\bin\Release\Test_Client_Login.exe
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Test_Client_Login\bin\Release\Test_Client_Login.pdb
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Test_Client_Login\bin\Release\CommonLibrary.dll
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Test_Client_Login\bin\Release\CommonLibrary.pdb
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Test_Client_Login\obj\Release\Test_Client_Login.exe
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Test_Client_Login\obj\Release\Test_Client_Login.pdb
+E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Test_Client_Login\obj\Release\Test_Client_Login.csprojResolveAssemblyReference.cache
