@@ -26,3 +26,17 @@ D:\develop\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csproj.CoreCo
 D:\develop\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csproj.CopyComplete
 D:\develop\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.exe
 D:\develop\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\LoginServer.exe.config
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\LoginServer.exe
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\LoginServer.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\CommonLibrary.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\Npgsql.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\NDesk.Options.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\CommonLibrary.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\CommonLibrary.dll.config
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\Npgsql.xml
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csprojAssemblyReference.cache
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csproj.CoreCompileInputs.cache
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csproj.CopyComplete
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.exe
+D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.pdb

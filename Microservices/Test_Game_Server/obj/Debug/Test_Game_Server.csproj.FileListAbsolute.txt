@@ -22,3 +22,15 @@ D:\develop\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.csp
 D:\develop\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.csproj.CopyComplete
 D:\develop\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.exe
 D:\develop\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\bin\Debug\Test_Game_Server.exe.config
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\bin\Debug\Test_Game_Server.exe
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\bin\Debug\Test_Game_Server.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\bin\Debug\CommonLibrary.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\bin\Debug\NDesk.Options.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\bin\Debug\CommonLibrary.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\bin\Debug\CommonLibrary.dll.config
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.csprojAssemblyReference.cache
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.csproj.CoreCompileInputs.cache
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.csproj.CopyComplete
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.exe
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Game_Server\obj\Debug\Test_Game_Server.pdb

@@ -1,7 +1,11 @@
 *.pdb
+*.obj
+*.dll
 *.exe
-/release/
-/debug/
+**/obj/release/*
+**/obj/debug/*
+**/bin/release/*
+**\bin\debug\*
 *.ilk
 .pch
 .ipch

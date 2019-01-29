@@ -16,3 +16,11 @@ D:\develop\Gateway\Microservices\CommonLibrary\obj\Debug\CommonLibrary_Ext.cspro
 D:\develop\Gateway\Microservices\CommonLibrary\obj\Debug\CommonLibrary_Ext.csproj.CopyComplete
 D:\develop\Gateway\Microservices\CommonLibrary\obj\Debug\CommonLibrary.dll
 D:\develop\Gateway\Microservices\CommonLibrary\obj\Debug\CommonLibrary.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\CommonLibrary\bin\Debug\CommonLibrary.dll.config
+D:\Develop\Console\Gateway\Gateway\Microservices\CommonLibrary\bin\Debug\CommonLibrary.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\CommonLibrary\bin\Debug\CommonLibrary.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\CommonLibrary\bin\Debug\NDesk.Options.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\CommonLibrary\obj\Debug\CommonLibrary_Ext.csproj.CoreCompileInputs.cache
+D:\Develop\Console\Gateway\Gateway\Microservices\CommonLibrary\obj\Debug\CommonLibrary_Ext.csproj.CopyComplete
+D:\Develop\Console\Gateway\Gateway\Microservices\CommonLibrary\obj\Debug\CommonLibrary.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\CommonLibrary\obj\Debug\CommonLibrary.pdb
