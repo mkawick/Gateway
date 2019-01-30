@@ -11,7 +11,7 @@ namespace Test_Client_TalkToGateway
 {
     class TestClientToGatewayController
     {
-        int applicationId;
+        uint applicationId;
         int numPacketsReceived = 0;
         bool isBoundToGateway = false;
         int entityId = 0;
@@ -19,7 +19,7 @@ namespace Test_Client_TalkToGateway
         public bool isLoggedIn = false;
         SocketWrapper socket;
 
-        public TestClientToGatewayController(string gatewayRemoteAddr, ushort gatewayPort, int appId = 15)
+        public TestClientToGatewayController(string gatewayRemoteAddr, ushort gatewayPort, uint appId = 15)
         {
             socket = new SocketWrapper("localhost", 11000);
 

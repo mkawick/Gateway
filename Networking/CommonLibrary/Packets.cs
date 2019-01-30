@@ -85,7 +85,7 @@ namespace Packets
     public class SocketPacketPair
     {
         public int connectionId;
-        public int gameId;
+        public uint gameId;
         public BasePacket packet;
 
         public SocketPacketPair(int _socketId, BasePacket _packet)
@@ -94,7 +94,7 @@ namespace Packets
             packet = _packet;
             gameId = 0;
         }
-        public SocketPacketPair(int _socketId, int _gameId, BasePacket _packet)
+        public SocketPacketPair(int _socketId, uint _gameId, BasePacket _packet)
         {
             connectionId = _socketId;
             packet = _packet;

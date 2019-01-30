@@ -13,7 +13,7 @@ namespace Gateway
 
         // Unique, GatewayServer-assigned id for the connected socket
         public int connectionId;
-        public int gameId = 0;
+        public uint gameId = 0;
         public int accountId = 0;
 
         //bool credentialsReceived = false;

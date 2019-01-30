@@ -24,14 +24,14 @@ namespace Packets
             return servers.Count == 0;
         }
 
-        public bool RoutePacketToServer(int gameId, int connectionId, BasePacket packet)
+        public bool RoutePacketToServer(uint gameId, int connectionId, BasePacket packet)
         {
             bool result = RouteToGame(gameId, connectionId, packet);  
                 
             return result;
         }
 
-        bool RouteToGame(int gameId, int connectionId, BasePacket packet)
+        bool RouteToGame(uint gameId, int connectionId, BasePacket packet)
         {
             if(Type == ServerIdPacket.ServerType.Game)
             {

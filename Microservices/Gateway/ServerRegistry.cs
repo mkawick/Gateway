@@ -24,9 +24,9 @@ namespace Gateway
             return group.Count;
         }
 
-        public List<int> GetGameServerIds()
+        public List<uint> GetGameServerIds()
         {
-            List<int> serverIds = new List<int>();
+            List<uint> serverIds = new List<uint>();
 
             ServerIdPacket.ServerType type = ServerIdPacket.ServerType.Game;
             ServerGroupByType group = groups.Find(g => g.Type == type);

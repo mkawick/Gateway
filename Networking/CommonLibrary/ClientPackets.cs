@@ -20,7 +20,7 @@ namespace Packets
     public class ClientGameInfoResponse : BasePacket
     {
         public override PacketType PacketType { get { return PacketType.ClientGameInfoResponse; } }
-        public int GameId { get; set; }
+        public uint GameId { get; set; }
 
         public override void Write(BinaryWriter writer)
         {
@@ -30,7 +30,7 @@ namespace Packets
         public override void Read(BinaryReader reader)
         {
             base.Read(reader);
-            GameId = reader.ReadInt32();
+            GameId = reader.ReadUInt32();
         }
 
         public override void CopyFrom(BasePacket packet)
@@ -44,7 +44,7 @@ namespace Packets
     public class ClientIdPacket : BasePacket
     {
         public override PacketType PacketType { get { return PacketType.ClientIdPacket; } }
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         public override void Write(BinaryWriter writer)
         {
@@ -54,7 +54,7 @@ namespace Packets
         public override void Read(BinaryReader reader)
         {
             base.Read(reader);
-            Id = reader.ReadInt32();
+            Id = reader.ReadUInt32();
         }
 
         public override void CopyFrom(BasePacket packet)

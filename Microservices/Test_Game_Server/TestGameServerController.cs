@@ -24,7 +24,7 @@ namespace Test_game_server
     class TestGameServerController
     {
         // meant to function a little like a game server but only for hammering the gateway
-        int applicationId = 15;
+        uint applicationId = 15;
         int numPacketsReceived = 0;
         bool isBoundToGateway = false;
 
@@ -36,7 +36,7 @@ namespace Test_game_server
         IPacketSend socket; // TODO: multiple connections.
 
         #region Construction
-        public TestGameServerController(string gatewayRemoteAddr, ushort gatewayPort, int appId)
+        public TestGameServerController(string gatewayRemoteAddr, ushort gatewayPort, uint appId)
         {
             SocketWrapper sock = new SocketWrapper("localhost", 11004);
 

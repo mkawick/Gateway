@@ -330,19 +330,19 @@ namespace Gateway
                 return;
             }
             screenRefreshTimer.Restart();
-            Dictionary<int, int> gameIdCounter = new Dictionary<int, int>();
+            Dictionary<int, uint> gameIdCounter = new Dictionary<int, uint>();
             int numServers = servers.GetNumberOfServers(ServerIdPacket.ServerType.Game);
-            List<int> ids = servers.GetGameServerIds();
+            List<uint> ids = servers.GetGameServerIds();
             foreach(var id in ids)
             {
-                gameIdCounter[id] = 0;
+                gameIdCounter[(int)id] = 0;
             }
             int numPlayers = players.Count;
             foreach(var p in players)
             {
-                int gameId = p.gameId;
-                if (gameIdCounter.ContainsKey(gameId))
-                    gameIdCounter[gameId]++;
+                uint gameId = p.gameId;
+                if (gameIdCounter.ContainsKey((int)gameId))
+                    gameIdCounter[(int)gameId]++;
             }
 
             Console.Clear();
@@ -467,7 +467,7 @@ namespace Gateway
                 containers.incomingPackets.Enqueue(new SocketPacketPair(clientConnectionId, packet));
             }
         }
-        public void AddIncomingPacket(BasePacket packet, int clientConnectionId, int gameId)
+        public void AddIncomingPacket(BasePacket packet, int clientConnectionId, uint gameId)
         {
             lock (containersLock)
             {
@@ -477,7 +477,7 @@ namespace Gateway
 
         //-----------------------------------------------------------------------------
 
-        void PassSaveStateToGameServer(int gameId, int connectionId, PlayerSaveState save)
+        void PassSaveStateToGameServer(uint gameId, int connectionId, PlayerSaveState save)
         {
             PlayerSaveStatePacket player = (PlayerSaveStatePacket)IntrepidSerialize.TakeFromPool(PacketType.PlayerSaveState);
             player.state = save;
@@ -501,7 +501,7 @@ namespace Gateway
                 {
                     BasePacket bp = pair.packet;
                     int connectionId = pair.connectionId;
-                    int gameId = pair.gameId;
+                    uint gameId = pair.gameId;
 
                     bool found = false;
                     foreach (var player in players)
@@ -618,7 +618,7 @@ namespace Gateway
             return null;
         }
 
-        void NotifyGameServerThatPlayerHasDisconnected(int clientConnectionId, int gameId, int accountId)
+        void NotifyGameServerThatPlayerHasDisconnected(int clientConnectionId, uint gameId, int accountId)
         {
             Console.WriteLine("Disconnect on gateway (2), connectionId: " + clientConnectionId);
 

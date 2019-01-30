@@ -44,7 +44,7 @@ namespace Packets
             None
         }
         public override PacketType PacketType { get { return PacketType.ServerIdPacket; } }
-        public int Id { get; set; }
+        public uint Id { get; set; }
         public int MapId { get; set; } // usually 0
         public ServerType Type { get; set; }
 
@@ -60,7 +60,7 @@ namespace Packets
         public override void Read(BinaryReader reader)
         {
             base.Read(reader);
-            Id = reader.ReadInt32();
+            Id = reader.ReadUInt32();
             MapId = reader.ReadInt32();
             int typeValue = reader.ReadInt32();
             Type = (ServerType)typeValue;

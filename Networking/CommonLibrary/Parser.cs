@@ -6,14 +6,14 @@ namespace CommonLibrary
 {
     public static class Parser
     {
-        public static int ApplicationId = 0;
+        public static uint ApplicationId = 0;
         public static int FPS = 0;
         public static string ipAddr = "";
 
         public static void ParseCommandLine(string[] args)
         {
             OptionSet options = new OptionSet()
-                .Add("id=|appid=|AppId=", a => ApplicationId = Convert.ToInt32(a))
+                .Add("id=|appid=|AppId=", a => ApplicationId = Convert.ToUInt32(a))
                 .Add("f=|fps=", f => FPS = Convert.ToInt32(f))
                 .Add("ip=|ipaddr=|IpAddr=", ip => ipAddr = ip)
                 .Add("?|h|help", h => DisplayHelp()); 

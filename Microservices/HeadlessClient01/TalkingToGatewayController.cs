@@ -7,7 +7,7 @@ namespace HeadlessClient01
 {
     class TalkingToGatewayController
     {
-        int applicationId;
+        uint applicationId;
         int numPacketsReceived = 0;
         bool isBoundToGateway = false;
 
@@ -15,7 +15,7 @@ namespace HeadlessClient01
         SocketWrapper socket;
         MyPlayer localPlayer;
 
-        public TalkingToGatewayController(string gatewayRemoteAddr, ushort gatewayPort, MyPlayer player, int appId)
+        public TalkingToGatewayController(string gatewayRemoteAddr, ushort gatewayPort, MyPlayer player, uint appId)
         {
             Set(player);
             socket = new SocketWrapper(gatewayRemoteAddr, gatewayPort);

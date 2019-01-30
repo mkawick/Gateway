@@ -216,10 +216,19 @@ namespace Network
             return ResolveIPAddress(Dns.GetHostName());
         }
 
-        public static int GetIPBasedApplicationId()
+        public static uint GetIPBasedApplicationId()
         {
             //return GetOwnIPAddress().ToString().GetHashCode();
-            return Convert.ToInt32(GetOwnIPAddress().ToString().Replace(".", ""));
+            string temp = GetOwnIPAddress().ToString();
+            IPAddress address = IPAddress.Parse(temp);
+            byte[] bytes = address.GetAddressBytes();
+            Array.Reverse(bytes); // flip big-endian(network order) to little-endian
+            uint intAddress = BitConverter.ToUInt32(bytes, 0);
+
+            return intAddress;
+           /* int value = (int)IPAddress.Parse(temp).GetAddressBytes();
+
+            return Convert.ToInt32(temp.Replace(".", ""));*/
         }
 
         static public int SetupWrite(BinaryWriter writer)

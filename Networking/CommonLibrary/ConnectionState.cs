@@ -14,7 +14,7 @@ namespace CommonLibrary
         protected object packetLock = new object();
         protected List<BasePacket> deserializedPackets = new List<BasePacket>();
 
-        public int gameId = 0;
+        public uint gameId = 0;
         public bool versionAndHandshakeComplete = false;
 
         /// <summary>
