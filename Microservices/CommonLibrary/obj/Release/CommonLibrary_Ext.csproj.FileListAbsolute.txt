@@ -1,6 +1,0 @@
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\CommonLibrary\bin\Release\CommonLibrary.dll.config
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\CommonLibrary\bin\Release\CommonLibrary.dll
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\CommonLibrary\bin\Release\CommonLibrary.pdb
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\CommonLibrary\obj\Release\CommonLibrary_Ext.csprojResolveAssemblyReference.cache
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\CommonLibrary\obj\Release\CommonLibrary.dll
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\CommonLibrary\obj\Release\CommonLibrary.pdb

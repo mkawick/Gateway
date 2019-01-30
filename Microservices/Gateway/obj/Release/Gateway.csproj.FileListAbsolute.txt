@@ -1,8 +1,0 @@
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Gateway\bin\Release\Gateway.exe.config
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Gateway\bin\Release\Gateway.exe
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Gateway\bin\Release\Gateway.pdb
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Gateway\bin\Release\CommonLibrary.dll
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Gateway\bin\Release\CommonLibrary.pdb
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Gateway\obj\Release\Gateway.csprojResolveAssemblyReference.cache
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Gateway\obj\Release\Gateway.exe
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Gateway\obj\Release\Gateway.pdb

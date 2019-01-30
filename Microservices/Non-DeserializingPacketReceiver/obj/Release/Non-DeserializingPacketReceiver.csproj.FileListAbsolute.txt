@@ -1,8 +1,0 @@
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Non-DeserializingPacketReceiver\bin\Release\Non-DeserializingPacketReceiver.exe.config
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Non-DeserializingPacketReceiver\bin\Release\Non-DeserializingPacketReceiver.exe
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Non-DeserializingPacketReceiver\bin\Release\Non-DeserializingPacketReceiver.pdb
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Non-DeserializingPacketReceiver\bin\Release\CommonLibrary.dll
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Non-DeserializingPacketReceiver\bin\Release\CommonLibrary.pdb
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Non-DeserializingPacketReceiver\obj\Release\Non-DeserializingPacketReceiver.csprojResolveAssemblyReference.cache
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Non-DeserializingPacketReceiver\obj\Release\Non-DeserializingPacketReceiver.exe
-E:\Develop\mickey_kawick_5YD15M2-PC_HeadlessClient_6886\Microservices\Non-DeserializingPacketReceiver\obj\Release\Non-DeserializingPacketReceiver.pdb

@@ -22,3 +22,15 @@ D:\develop\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.csp
 D:\develop\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.csproj.CopyComplete
 D:\develop\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.exe
 D:\develop\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\HeadlessClient01.exe.config
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\HeadlessClient01.exe
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\HeadlessClient01.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\CommonLibrary.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\NDesk.Options.dll
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\CommonLibrary.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\CommonLibrary.dll.config
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.csprojAssemblyReference.cache
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.csproj.CoreCompileInputs.cache
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.csproj.CopyComplete
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.exe
+D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.pdb
