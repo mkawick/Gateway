@@ -5,7 +5,23 @@ using Vectors;
 
 namespace SpatialPartitionPattern
 {
-    public class Grid
+    public abstract class IMovementObserver
+    {
+        float rangeToWatch;
+        float distSquared;
+        public virtual Vector3 GetPosition() { return new Vector3(); }
+        public float Range { get { return rangeToWatch; } set { rangeToWatch = value; distSquared = value * value; } }
+        public bool IsInRange(Vector3 soPosition)
+        {
+            if (Vector3.DistanceSquared(GetPosition(), soPosition) < distSquared) 
+                return true;
+            return false;
+        }
+
+        public virtual void HandleSpaceObjectUpdate(SpaceObject so) {  }
+    }
+
+    public class VisibilityGrid
     {
         //Need this to convert from world coordinate position to cell position
         int cellSize;
@@ -18,6 +34,10 @@ namespace SpatialPartitionPattern
         List<SpaceObject> recentlyAddedObjects;
         List<SpaceObject> recentlyMovedObjects;
         List<SpaceObject> recentlyDeletedObjects;
+        List<IMovementObserver> trackers;
+        public event Action<List<SpaceObject>> OnNewlySpawnedObjects;
+        public event Action<List<SpaceObject>> OnNewlyDeletedObjects;
+        //public event Action<SpaceObject, float> OnRecentlyMovedObjects;
 
         public int RangeMin
         {
@@ -29,7 +49,7 @@ namespace SpatialPartitionPattern
         }
 
         //Init the grid
-        public Grid(float mapWidth, int cellSize)
+        public VisibilityGrid(float mapWidth, int cellSize)
         {
             this.cellSize = cellSize;
             this.rangeMin = (int)-mapWidth;
@@ -44,6 +64,50 @@ namespace SpatialPartitionPattern
             recentlyAddedObjects = new List<SpaceObject>();
             recentlyMovedObjects = new List<SpaceObject>();
             recentlyDeletedObjects = new List<SpaceObject>();
+            trackers = new List<IMovementObserver>();
+        }
+
+        public void Tick()
+        {
+            OnNewlySpawnedObjects(recentlyAddedObjects);
+            OnNewlyDeletedObjects(recentlyDeletedObjects);
+            recentlyAddedObjects.Clear();
+            recentlyDeletedObjects.Clear();
+            //OnRecentlyMovedObjects(this);
+            recentlyMovedObjects.Clear();
+        }
+
+        void RegisterMovementCallback(IMovementObserver movementTracker)
+        {
+            foreach(var i in trackers)
+            {
+                if (i == movementTracker)
+                    return;
+            }
+            trackers.Add(movementTracker);
+        }
+
+        void Unregister(IMovementObserver movementTracker)
+        {
+            foreach (var i in trackers)
+            {
+                if (i == movementTracker)
+                {
+                    trackers.Remove(i);
+                    return;
+                }
+            }
+        }
+
+        void NotifyAllObserversAboutMovement(SpaceObject so)
+        {
+            foreach (var i in trackers)
+            {
+                if(i.IsInRange(so.position))
+                {
+                    i.HandleSpaceObjectUpdate(so);
+                }
+            }
         }
 
         public void ClearAll()
@@ -69,6 +133,7 @@ namespace SpatialPartitionPattern
             //Add the soldier to the front of the list for the cell it's in
             spaceObject.prev = null;
             spaceObject.next = cells[cellX, cellZ];
+            spaceObject.isNewlySpawned = true;
 
             cells[cellX, cellZ] = spaceObject;
 
@@ -112,6 +177,7 @@ namespace SpatialPartitionPattern
             }
             spaceObject.prev = null;
             spaceObject.next = null;
+            spaceObject.isNewlyRemoved = true;
         }
 
         int NormalizeCell(float pos)

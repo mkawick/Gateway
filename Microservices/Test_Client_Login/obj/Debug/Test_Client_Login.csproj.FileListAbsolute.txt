@@ -33,3 +33,4 @@ D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_Login\obj\Debug\Tes
 D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.csproj.CopyComplete
 D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.exe
 D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.pdb
+D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.csprojAssemblyReference.cache
