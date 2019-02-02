@@ -1,4 +1,5 @@
 ﻿using SpatialPartitioningTest01;
+using SpatialPartitionPattern;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -195,10 +196,21 @@ namespace SpatialPartitioningTest01
 
             return false;
         }
+        class Observer : IMovementObserver
+        {
+            Vector3 location;
+            public void SetPosition(int x, int z) { location.x = x; location.z = z; }
+            public Vector3 GetPosition() { return location; }
+        }
         static bool RunEventCallbacksTest(int centerX, int centerZ, int range, Asteroid[] ast, SpatialPartitionPattern.VisibilityGrid partition)
         {
             partition.ClearAll();
             partition.Tick();// must tick
+
+            
+            Observer ob = new Observer();
+            ob.Range = 200;
+            ob.SetPosition(centerX, centerZ);
 
             return true;
         }
