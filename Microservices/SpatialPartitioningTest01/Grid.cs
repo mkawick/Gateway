@@ -61,6 +61,9 @@ namespace SpatialPartitionPattern
             numberOfCells = (int)mapWidth / cellSize;
 
             cells = new SpaceObject[numberOfCells, numberOfCells];
+
+            //OnNewlySpawnedObjects = new Action();
+            //OnNewlyDeletedObjects = new Action<List<SpaceObject>>;
             recentlyAddedObjects = new List<SpaceObject>();
             recentlyMovedObjects = new List<SpaceObject>();
             recentlyDeletedObjects = new List<SpaceObject>();
@@ -69,8 +72,8 @@ namespace SpatialPartitionPattern
 
         public void Tick()
         {
-            OnNewlySpawnedObjects(recentlyAddedObjects);
-            OnNewlyDeletedObjects(recentlyDeletedObjects);
+            OnNewlySpawnedObjects?.Invoke(recentlyAddedObjects);
+            OnNewlyDeletedObjects?.Invoke(recentlyDeletedObjects);
             recentlyAddedObjects.Clear();
             recentlyDeletedObjects.Clear();
             //OnRecentlyMovedObjects(this);

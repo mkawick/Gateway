@@ -59,7 +59,12 @@ namespace SpatialPartitioningTest01
                 partition.Add(ast[i].spaceObject);
             }
 
-            partition.PrintCountPerCell();
+            if (RunEventCallbacksTest(200, 200, 200, ast, partition) == false)
+            {
+                Console.WriteLine("RunEventCallbacksTest failed");
+            }
+            //RunEventCallbacksTest(200, 200, 200, ast, partition);
+            //partition.PrintCountPerCell();
 
             int successCount = 0;
             int numTestRuns = 50;
@@ -201,16 +206,56 @@ namespace SpatialPartitioningTest01
             Vector3 location;
             public void SetPosition(int x, int z) { location.x = x; location.z = z; }
             public Vector3 GetPosition() { return location; }
+
+            public int CountAdded { get; set; }
+            public int CountDeleted { get; set; }
+
+            public void Register(VisibilityGrid grid)
+            {
+                grid.OnNewlySpawnedObjects += HandleAddedItems;
+                grid.OnNewlyDeletedObjects += OnNewlyDeletedObjects;
+            }
+
+            private void OnNewlyDeletedObjects(List<SpaceObject> objects)
+            {
+                CountDeleted += objects.Count;
+            }
+
+            public void HandleAddedItems(List<SpaceObject> objects)
+            {
+                CountAdded += objects.Count;
+            }
         }
+        // count adds
+        // count deletes
+        // count moves
+        // moves too far away
+        // adds too far away
+        // deletes too far away     
         static bool RunEventCallbacksTest(int centerX, int centerZ, int range, Asteroid[] ast, SpatialPartitionPattern.VisibilityGrid partition)
         {
             partition.ClearAll();
             partition.Tick();// must tick
 
-            
+            float testRange = 200;
             Observer ob = new Observer();
-            ob.Range = 200;
+            ob.Range = testRange;
             ob.SetPosition(centerX, centerZ);
+            ob.Register(partition);
+            if (ob.CountAdded != 0 || ob.CountDeleted != 0)
+            {
+                Console.WriteLine("RunEventCallbacksTest:: invalid setup ****");
+            }
+
+            Asteroid as1 = new Asteroid();
+            as1.spaceObject.position.x = ob.GetPosition().x + testRange;
+            as1.spaceObject.position.z = ob.GetPosition().z + testRange;
+            partition.Add(as1.spaceObject);
+            partition.Tick();
+            if(ob.CountAdded != 0 || ob.CountDeleted != 0)
+            {
+                Console.WriteLine("RunEventCallbacksTest:: invalid add or delete ****");
+            }
 
             return true;
         }
