@@ -216,10 +216,12 @@ namespace Network
             return ResolveIPAddress(Dns.GetHostName());
         }
 
-        public static int GetIPBasedApplicationId()
+        public static Int64 GetIPBasedApplicationId()
         {
             //return GetOwnIPAddress().ToString().GetHashCode();
-            return Convert.ToInt32(GetOwnIPAddress().ToString().Replace(".", ""));
+            string addr = GetOwnIPAddress().ToString();
+
+            return Convert.ToInt64(addr.Replace(".", ""));
         }
 
         static public int SetupWrite(BinaryWriter writer)

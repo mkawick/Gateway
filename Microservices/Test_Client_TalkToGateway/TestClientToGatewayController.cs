@@ -11,7 +11,7 @@ namespace Test_Client_TalkToGateway
 {
     class TestClientToGatewayController
     {
-        int applicationId;
+        Int64 applicationId;
         int numPacketsReceived = 0;
         bool isBoundToGateway = false;
         int entityId = 0;
@@ -19,7 +19,7 @@ namespace Test_Client_TalkToGateway
         public bool isLoggedIn = false;
         SocketWrapper socket;
 
-        public TestClientToGatewayController(string gatewayRemoteAddr, ushort gatewayPort, int appId = 15)
+        public TestClientToGatewayController(string gatewayRemoteAddr, ushort gatewayPort, Int64 appId = 15)
         {
             socket = new SocketWrapper("localhost", 11000);
 
@@ -45,7 +45,7 @@ namespace Test_Client_TalkToGateway
                 return;
 
             ClientIdPacket clientId = (ClientIdPacket)IntrepidSerialize.TakeFromPool(PacketType.ClientIdPacket);
-            clientId.Id = applicationId;
+            clientId.Id = (int) applicationId;
             sender.Send(clientId);
         }
         public void Sock_OnDisconnect(IPacketSend sender, bool willRetry)
@@ -113,7 +113,7 @@ namespace Test_Client_TalkToGateway
                             Send(temp);
 
                             ClientGameInfoResponse cgir = (ClientGameInfoResponse)IntrepidSerialize.TakeFromPool(PacketType.ClientGameInfoResponse);
-                            cgir.GameId = applicationId;
+                            cgir.GameId = (int) applicationId;
                             Send(cgir);
 
                             isLoggedIn = lcr.isValid;

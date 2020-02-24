@@ -1,5 +1,6 @@
 ﻿using CommonLibrary;
 using Packets;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Test_game_server
     class TestGameServerController
     {
         // meant to function a little like a game server but only for hammering the gateway
-        int applicationId = 15;
+        Int64 applicationId = 15;
         int numPacketsReceived = 0;
         bool isBoundToGateway = false;
 
@@ -36,7 +37,7 @@ namespace Test_game_server
         IPacketSend socket; // TODO: multiple connections.
 
         #region Construction
-        public TestGameServerController(string gatewayRemoteAddr, ushort gatewayPort, int appId)
+        public TestGameServerController(string gatewayRemoteAddr, ushort gatewayPort, Int64 appId)
         {
             SocketWrapper sock = new SocketWrapper("localhost", 11004);
 
@@ -69,7 +70,7 @@ namespace Test_game_server
            // socket = sender;
             ServerIdPacket serverId = (ServerIdPacket)IntrepidSerialize.TakeFromPool(PacketType.ServerIdPacket);
             serverId.Type = ServerIdPacket.ServerType.Game;
-            serverId.Id = applicationId;
+            serverId.Id = (int) applicationId;
             serverId.MapId = 1;
             sender.Send(serverId);
         }

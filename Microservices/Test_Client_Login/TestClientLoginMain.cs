@@ -11,7 +11,7 @@ namespace Test_client_login
         static void Main(string[] args)
         {
             CommonLibrary.Parser.ParseCommandLine(args);
-            int applicationId = CommonLibrary.Parser.ApplicationId;
+            Int64 applicationId = CommonLibrary.Parser.ApplicationId;
             if (applicationId == 0)
             {
                 applicationId = Network.Utils.GetIPBasedApplicationId();

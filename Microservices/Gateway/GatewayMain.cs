@@ -74,66 +74,10 @@ namespace Gateway
             serverListener.StopListening();
         }
 
-        private void OnNewPlayerConnection(Socket s)
-        {
-            PlayerConnectionState state = new PlayerConnectionState(s);
-            lock (connectedLock)
-            {
-                newPlayersAwaitingConfirmation.Add(state);
-            }
 
-            NotifyEndpoint_ServerId(state);
-        }
+        //------------------------------------------------------------------------------
 
-        private void OnNewServerConnection(Socket socket)
-        {
-            ServerConnectionState wrapper = new ServerConnectionState(socket);
-            lock (connectedLock)
-            {
-                newServersAwaitingConfirmation.Add(wrapper);
-            }
-
-            IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
-            //Console.WriteLine("OnNewServerConnection {0}", remoteIpEndPoint.Address);
-            NotifyEndpoint_ServerId(wrapper);
-        }
-
-        private void NotifyEndpoint_ServerId(ConnectionState connection)
-        {
-            ServerIdPacket packet = (ServerIdPacket)IntrepidSerialize.TakeFromPool(PacketType.ServerIdPacket);
-            packet.Type = ServerIdPacket.ServerType.Gateway;
-            packet.MapId = 0;
-            packet.Id = 0;
-            connection.Send(packet);
-        }
-
-        void HandleAllDisconnectedServers()
-        {
-            if (extremeLogging == true)
-                Console.WriteLine("HandleAllDisconnectedServers");
-
-            for (int i = newServersAwaitingConfirmation.Count - 1; i >= 0; i--)
-            {
-                var server = newServersAwaitingConfirmation[i];
-                if (server.MarkedAsSocketClosed == true)
-                {
-                    lock (connectedLock)
-                    {
-                        newServersAwaitingConfirmation.RemoveAt(i);
-                    }
-                }
-            }
-            foreach (var server in servers)
-            {
-                if (server.MarkedAsSocketClosed == true)
-                {
-                    servers.Remove(server);
-                    Console.WriteLine("Server removed:{0} of type {1}", server.gameId, server.serverType);
-                }
-            }
-        }
-
-#region KeepAlive
+        #region KeepAlive
         void ManageServerKeepAlive()
         {
             if (extremeLogging == true)
@@ -196,46 +140,9 @@ namespace Gateway
             }
         }
 
-#endregion KeepAlive
+        #endregion KeepAlive
 
-        void PromoteNewServers()
-        {
-            if (extremeLogging == true)
-                Console.WriteLine("PromoteNewServers");
-
-            for (int i = newServersAwaitingConfirmation.Count - 1; i >= 0; i--)
-            {
-                var server = newServersAwaitingConfirmation[i];
-                if (server.MarkedAsSocketClosed == true)
-                {
-                    continue;
-                }
-                if (!server.ProcessIdPackets())
-                {
-                    // Server either gave us too much data, or the wrong packet
-                    Console.WriteLine("Server gave us too many packets, or not a ServerIdPacket, disconnecting: {0}", server);
-                    // TODO: Send disconnect packet?
-                    server.Disconnect();
-                }
-                if (server.versionAndHandshakeComplete == true)// todo: timeout servers within a few seconds... prevent hacking.
-                {
-                    if (!servers.Add(server))
-                    {
-                        Console.WriteLine("Server with duplicate game id, disconnecting: {0}", server.gameId);
-                        // TODO: Send disconnect packet?
-                        server.Disconnect();
-                    }
-                    lock (connectedLock)
-                    {
-                        newServersAwaitingConfirmation.RemoveAt(i);
-                    }
-                    IPAddress remoteIpEndPoint = server.Address;
-                    Console.WriteLine("OnNewServerConnection {0}", remoteIpEndPoint);
-                }
-            }
-        }
-
-        //------------------------------------------------------------------------------
+        #region THREAD
         protected override void ThreadTick()
         {
             try
@@ -259,7 +166,9 @@ namespace Gateway
                 Console.Error.WriteLine(e);
             }
         }
+        #endregion THREAD
 
+        #region PLAYER_STATE
         void MigratePendingPlayersToLoginServer()
         {
             if (extremeLogging == true)
@@ -314,97 +223,15 @@ namespace Gateway
             }
         }
 
-        public static void ClearCurrentConsoleLine()
+        private void OnNewPlayerConnection(Socket s)
         {
-            int currentLineCursor = Console.CursorTop;
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, currentLineCursor);
-        }
-
-        void LogAllStats()
-        {
-            long elapsedTime = screenRefreshTimer.ElapsedMilliseconds;
-            if(elapsedTime < 1000)
-            {
-                return;
-            }
-            screenRefreshTimer.Restart();
-            Dictionary<int, int> gameIdCounter = new Dictionary<int, int>();
-            int numServers = servers.GetNumberOfServers(ServerIdPacket.ServerType.Game);
-            List<int> ids = servers.GetGameServerIds();
-            foreach(var id in ids)
-            {
-                gameIdCounter[id] = 0;
-            }
-            int numPlayers = players.Count;
-            foreach(var p in players)
-            {
-                int gameId = p.gameId;
-                if (gameIdCounter.ContainsKey(gameId))
-                    gameIdCounter[gameId]++;
-            }
-
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("Gateway launched {0}", launchDate.ToShortTimeString());
-            TimeSpan interval = DateTime.Now - launchDate;
-            Console.WriteLine("Gateway runtime length {0} seconds", (int)interval.Duration().TotalSeconds);
-            Console.CursorTop = 3;
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("----------------------------------------------");
-
-            Console.WriteLine("Player listen: \n\t{0} for connections on {1}:{2}", playerConnectionListener.ServerName, playerConnectionListener.Address, playerConnectionListener.Port);
-            Console.WriteLine("Server listen: \n\t{0} for connections on {1}:{2}", serverListener.ServerName, serverListener.Address, serverListener.Port);
-            Console.WriteLine("----------------------------------------------");
-
-
-            
-
-            foreach(var count in gameIdCounter)
-            {
-                if(count.Value == 0)
-                    Console.ForegroundColor = ConsoleColor.Red;
-                else if (count.Value <10)
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                else
-                    Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Game ID: {0}, players: {1}", count.Key, count.Value);
-            }
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Total players:", numPlayers));
-            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Total servers:", numServers));            
-            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Players packet velocity:", (numPlayerPackets - numPlayerPacketsLastTimeStamp)));
-            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Servers packet velocity:", (numServerPackets - numServerPacketsLastTimeStamp)));
-            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Packets from players:", numPlayerPackets));
-            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Packets from servers:", numServerPackets));
-
-            numPlayerPacketsLastTimeStamp = numPlayerPackets;
-            numServerPacketsLastTimeStamp = numServerPackets;
-
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("----------------------------------------------");
-
-        }
-
-        void ManageAllClientPackets()
-        {
-            if (extremeLogging == true)
-                Console.WriteLine("ManageAllClientPackets");
-
-            List<GatewayPlayer> tempPlayers;
+            PlayerConnectionState state = new PlayerConnectionState(s);
             lock (connectedLock)
             {
-                tempPlayers = new List<GatewayPlayer>(players);
-            }
-            foreach (var player in tempPlayers)
-            {
-                player.Update();
-                PassPendingPacketsOntoServers();
+                newPlayersAwaitingConfirmation.Add(state);
             }
 
-            PassOutgoingPacketsOntoClients();
+            NotifyEndpoint_ServerId(state);
         }
 
         //Todo: It's not really the gateways job to kick inactive players?
@@ -425,8 +252,6 @@ namespace Gateway
                 }
             }
         }
-
-        //------------------------------------------------------------------------------
 
         public void NewPlayerLoginResult(PlayerConnectionState playerConnection, bool success, PlayerSaveState save)
         {
@@ -451,40 +276,121 @@ namespace Gateway
 
             playerConnection.Send(lcv);
         }
+        #endregion PLAYER_STATE
 
-        public void AddOutgoingPacket(BasePacket packet, int connectionId)
+        #region SERVER_STATE
+        private void OnNewServerConnection(Socket socket)
         {
-            lock (containersLock)
+            ServerConnectionState wrapper = new ServerConnectionState(socket);
+            lock (connectedLock)
             {
-                containers.outgoingPackets.Enqueue(new SocketPacketPair(connectionId, packet));
+                newServersAwaitingConfirmation.Add(wrapper);
+            }
+
+            IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
+            //Console.WriteLine("OnNewServerConnection {0}", remoteIpEndPoint.Address);
+            NotifyEndpoint_ServerId(wrapper);
+        }
+
+        private void NotifyEndpoint_ServerId(ConnectionState connection)
+        {
+            ServerIdPacket packet = (ServerIdPacket)IntrepidSerialize.TakeFromPool(PacketType.ServerIdPacket);
+            packet.Type = ServerIdPacket.ServerType.Gateway;
+            packet.MapId = 0;
+            packet.Id = 0;
+            connection.Send(packet);
+        }
+
+        void HandleAllDisconnectedServers()
+        {
+            if (extremeLogging == true)
+                Console.WriteLine("HandleAllDisconnectedServers");
+
+            for (int i = newServersAwaitingConfirmation.Count - 1; i >= 0; i--)
+            {
+                var server = newServersAwaitingConfirmation[i];
+                if (server.MarkedAsSocketClosed == true)
+                {
+                    lock (connectedLock)
+                    {
+                        newServersAwaitingConfirmation.RemoveAt(i);
+                    }
+                }
+            }
+            foreach (var server in servers)
+            {
+                if (server.MarkedAsSocketClosed == true)
+                {
+                    servers.Remove(server);
+                    Console.WriteLine("Server removed:{0} of type {1}", server.gameId, server.serverType);
+                }
             }
         }
 
-        public void AddIncomingPacket(BasePacket packet, int clientConnectionId)
+        void PromoteNewServers()
         {
-            lock (containersLock)
+            if (extremeLogging == true)
+                Console.WriteLine("PromoteNewServers");
+
+            for (int i = newServersAwaitingConfirmation.Count - 1; i >= 0; i--)
             {
-                containers.incomingPackets.Enqueue(new SocketPacketPair(clientConnectionId, packet));
+                var server = newServersAwaitingConfirmation[i];
+                if (server.MarkedAsSocketClosed == true)
+                {
+                    continue;
+                }
+                if (!server.ProcessIdPackets())
+                {
+                    // Server either gave us too much data, or the wrong packet
+                    Console.WriteLine("Server gave us too many packets, or not a ServerIdPacket, disconnecting: {0}", server);
+                    // TODO: Send disconnect packet?
+                    server.Disconnect();
+                }
+                if (server.versionAndHandshakeComplete == true)// todo: timeout servers within a few seconds... prevent hacking.
+                {
+                    if (!servers.Add(server))
+                    {
+                        Console.WriteLine("Server with duplicate game id, disconnecting: {0}", server.gameId);
+                        // TODO: Send disconnect packet?
+                        server.Disconnect();
+                    }
+                    lock (connectedLock)
+                    {
+                        newServersAwaitingConfirmation.RemoveAt(i);
+                    }
+                    IPAddress remoteIpEndPoint = server.Address;
+                    Console.WriteLine("OnNewServerConnection {0}", remoteIpEndPoint);
+                }
             }
         }
-        public void AddIncomingPacket(BasePacket packet, int clientConnectionId, int gameId)
+        void NotifyGameServerThatPlayerHasDisconnected(int clientConnectionId, int gameId, int accountId)
         {
-            lock (containersLock)
+            Console.WriteLine("Disconnect on gateway (2), connectionId: " + clientConnectionId);
+
+            foreach (var server in servers)
             {
-                containers.incomingPackets.Enqueue(new SocketPacketPair(clientConnectionId, gameId, packet));
+                if (server.serverType != ServerIdPacket.ServerType.Game
+                    || server.gameId == gameId)
+                {
+                    ClientDisconnectPacket cdp = (ClientDisconnectPacket)IntrepidSerialize.TakeFromPool(PacketType.ClientDisconnect);
+                    cdp.connectionId = clientConnectionId;
+                    cdp.accountId = accountId;
+                    server.Send(cdp);
+                }
             }
         }
 
-        //-----------------------------------------------------------------------------
+        #endregion SERVER_STATE
 
+        //------------------------------------------------------------------------------
+
+        #region MARSHALLING_PACKETS
         void PassSaveStateToGameServer(int gameId, int connectionId, PlayerSaveState save)
         {
             PlayerSaveStatePacket player = (PlayerSaveStatePacket)IntrepidSerialize.TakeFromPool(PacketType.PlayerSaveState);
             player.state = save;
             AddIncomingPacket(player, connectionId, gameId);
         }
-
-        //-----------------------------------------------------------------------------
 
         void PassOutgoingPacketsOntoClients()
         {
@@ -537,10 +443,10 @@ namespace Gateway
         }
 
         void MoveServerPacketsIntoOutgoingClients()
-        { 
+        {
             if (extremeLogging == true)
                 Console.WriteLine("MoveServerPacketsIntoOutgoingClients");
-            
+
             List<GatewayPlayer> tempPlayerList;
             lock (connectedLock)
             {
@@ -554,16 +460,16 @@ namespace Gateway
                     numServerPackets += newData.Count;
                     foreach (var packet in newData)
                     {
-                        if(packet is ServerConnectionHeader)
+                        if (packet is ServerConnectionHeader)
                         {
                             currentConnectionIdForHeader = (packet as ServerConnectionHeader).connectionId;
                             currentPlayerForHeader = FindPlayer(currentConnectionIdForHeader, tempPlayerList);
-                            
-                            if(currentPlayerForHeader == null)
+
+                            if (currentPlayerForHeader == null)
                             {
-                                ClientDisconnectPacket clientDisconnect = (ClientDisconnectPacket) IntrepidSerialize.TakeFromPool(PacketType.ClientDisconnect);
+                                ClientDisconnectPacket clientDisconnect = (ClientDisconnectPacket)IntrepidSerialize.TakeFromPool(PacketType.ClientDisconnect);
                                 clientDisconnect.connectionId = currentConnectionIdForHeader;
-                                Console.WriteLine("Disconnecting connectionId (1): "+clientDisconnect.connectionId);
+                                Console.WriteLine("Disconnecting connectionId (1): " + clientDisconnect.connectionId);
                                 server.Send(clientDisconnect);
                                 server.skipNextPacket = true;
                             }
@@ -576,7 +482,7 @@ namespace Gateway
                         }
                         else
                         {
-                            if(currentPlayerForHeader != null)
+                            if (currentPlayerForHeader != null)
                             {
                                 if (packet.PacketType == PacketType.ServerPingHopper)
                                 {
@@ -608,6 +514,52 @@ namespace Gateway
             }
         }
 
+        public void AddOutgoingPacket(BasePacket packet, int connectionId)
+        {
+            lock (containersLock)
+            {
+                containers.outgoingPackets.Enqueue(new SocketPacketPair(connectionId, packet));
+            }
+        }
+
+        public void AddIncomingPacket(BasePacket packet, int clientConnectionId)
+        {
+            lock (containersLock)
+            {
+                containers.incomingPackets.Enqueue(new SocketPacketPair(clientConnectionId, packet));
+            }
+        }
+        public void AddIncomingPacket(BasePacket packet, int clientConnectionId, int gameId)
+        {
+            lock (containersLock)
+            {
+                containers.incomingPackets.Enqueue(new SocketPacketPair(clientConnectionId, gameId, packet));
+            }
+        }
+        void ManageAllClientPackets()
+        {
+            if (extremeLogging == true)
+                Console.WriteLine("ManageAllClientPackets");
+
+            List<GatewayPlayer> tempPlayers;
+            lock (connectedLock)
+            {
+                tempPlayers = new List<GatewayPlayer>(players);
+            }
+            foreach (var player in tempPlayers)
+            {
+                player.Update();
+                PassPendingPacketsOntoServers();
+            }
+
+            PassOutgoingPacketsOntoClients();
+        }
+        #endregion MARSHALLING_PACKETS
+        
+        //-----------------------------------------------------------------------------
+
+        //-----------------------------------------------------------------------------
+
         static GatewayPlayer FindPlayer(int connectionId, List<GatewayPlayer> tempPlayerList)
         {
             foreach (var player in tempPlayerList)
@@ -618,21 +570,80 @@ namespace Gateway
             return null;
         }
 
-        void NotifyGameServerThatPlayerHasDisconnected(int clientConnectionId, int gameId, int accountId)
+        #region STATS
+        public static void ClearCurrentConsoleLine()
         {
-            Console.WriteLine("Disconnect on gateway (2), connectionId: " + clientConnectionId);
-
-           foreach (var server in servers)
-           {
-                if (server.serverType != ServerIdPacket.ServerType.Game 
-                    || server.gameId == gameId)
-                {
-                    ClientDisconnectPacket cdp = (ClientDisconnectPacket)IntrepidSerialize.TakeFromPool(PacketType.ClientDisconnect);
-                    cdp.connectionId = clientConnectionId;
-                    cdp.accountId = accountId;
-                    server.Send(cdp);
-                }
-            }
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
         }
+
+        void LogAllStats()
+        {
+            long elapsedTime = screenRefreshTimer.ElapsedMilliseconds;
+            if (elapsedTime < 1000)
+            {
+                return;
+            }
+            screenRefreshTimer.Restart();
+            Dictionary<int, int> gameIdCounter = new Dictionary<int, int>();
+            int numServers = servers.GetNumberOfServers(ServerIdPacket.ServerType.Game);
+            List<int> ids = servers.GetGameServerIds();
+            foreach (var id in ids)
+            {
+                gameIdCounter[id] = 0;
+            }
+            int numPlayers = players.Count;
+            foreach (var p in players)
+            {
+                int gameId = p.gameId;
+                if (gameIdCounter.ContainsKey(gameId))
+                    gameIdCounter[gameId]++;
+            }
+
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Gateway launched {0}", launchDate.ToShortTimeString());
+            TimeSpan interval = DateTime.Now - launchDate;
+            Console.WriteLine("Gateway runtime length {0} seconds", (int)interval.Duration().TotalSeconds);
+            Console.CursorTop = 3;
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("----------------------------------------------");
+
+            Console.WriteLine("Player listen: \n\t{0} for connections on {1}:{2}", playerConnectionListener.ServerName, playerConnectionListener.Address, playerConnectionListener.Port);
+            Console.WriteLine("Server listen: \n\t{0} for connections on {1}:{2}", serverListener.ServerName, serverListener.Address, serverListener.Port);
+            Console.WriteLine("----------------------------------------------");
+
+
+
+
+            foreach (var count in gameIdCounter)
+            {
+                if (count.Value == 0)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                else if (count.Value < 10)
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                else
+                    Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Game ID: {0}, players: {1}", count.Key, count.Value);
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Total players:", numPlayers));
+            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Total servers:", numServers));
+            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Players packet velocity:", (numPlayerPackets - numPlayerPacketsLastTimeStamp)));
+            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Servers packet velocity:", (numServerPackets - numServerPacketsLastTimeStamp)));
+            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Packets from players:", numPlayerPackets));
+            Console.WriteLine(String.Format("{0, -24}{1, 12}", "Packets from servers:", numServerPackets));
+
+            numPlayerPacketsLastTimeStamp = numPlayerPackets;
+            numServerPacketsLastTimeStamp = numServerPackets;
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("----------------------------------------------");
+
+        }
+        #endregion
     }
 }

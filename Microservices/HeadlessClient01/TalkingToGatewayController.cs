@@ -7,7 +7,7 @@ namespace HeadlessClient01
 {
     class TalkingToGatewayController
     {
-        int applicationId;
+        Int64 applicationId;
         int numPacketsReceived = 0;
         bool isBoundToGateway = false;
 
@@ -15,7 +15,7 @@ namespace HeadlessClient01
         SocketWrapper socket;
         MyPlayer localPlayer;
 
-        public TalkingToGatewayController(string gatewayRemoteAddr, ushort gatewayPort, MyPlayer player, int appId)
+        public TalkingToGatewayController(string gatewayRemoteAddr, ushort gatewayPort, MyPlayer player, Int64 appId)
         {
             Set(player);
             socket = new SocketWrapper(gatewayRemoteAddr, gatewayPort);
@@ -46,7 +46,7 @@ namespace HeadlessClient01
                 return;
 
             ClientIdPacket clientId = (ClientIdPacket)IntrepidSerialize.TakeFromPool(PacketType.ClientIdPacket);
-            clientId.Id = applicationId;
+            clientId.Id = (int) applicationId;
             sender.Send(clientId);
         }
         public void Sock_OnDisconnect(IPacketSend sender, bool willRetry)
@@ -140,7 +140,7 @@ namespace HeadlessClient01
                             Send(temp);
 
                             ClientGameInfoResponse cgir = (ClientGameInfoResponse)IntrepidSerialize.TakeFromPool(PacketType.ClientGameInfoResponse);
-                            cgir.GameId = applicationId;
+                            cgir.GameId = (int) applicationId;
                             Send(cgir);
 
                             isLoggedIn = lcr.isValid;
