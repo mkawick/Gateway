@@ -15,6 +15,9 @@ namespace CommonLibrary
         public void AddConnection(int connId) { if (clientConnectionIds.IndexOf(connId) != -1) return; clientConnectionIds.Add(connId); }
         public void RemoveConnection(int connId) { if (clientConnectionIds.IndexOf(connId) == -1) return; clientConnectionIds.Remove(connId); }
 
+        public ServerConnectionState() : base()// only to support mocks
+        {
+        }
         public ServerConnectionState(Socket handler,
             int bufferSize = 51200,
             int maxRetryAttempts = 0,
@@ -58,7 +61,7 @@ namespace CommonLibrary
             return false;
         }
 
-        public IPAddress Address { get { return remoteIpEndPoint.Address; } }
+        public virtual IPAddress Address { get { return remoteIpEndPoint.Address; } }
 
         void HandleServerHopping(ServerPingHopperPacket packet)
         {

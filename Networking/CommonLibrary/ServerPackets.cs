@@ -41,6 +41,7 @@ namespace Packets
             Friends,
             Groups,
             Purchase,
+            Mock,
             None
         }
         public override PacketType PacketType { get { return PacketType.ServerIdPacket; } }

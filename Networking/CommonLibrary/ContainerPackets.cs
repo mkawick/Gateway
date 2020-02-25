@@ -115,42 +115,60 @@ namespace Packets
     {
         public override PacketType PacketType { get { return PacketType.DataBlob; } }
 
-        public byte[] blob;
-        public int length;
-
+        public byte[] rawData;
+        public short length;
+        public short packetIndex;
+        public short totalRawDataPacketCount;
+        ///public short blobGroupId;
 
         public DataBlob() : base()
         {
-            blob = null;
+            rawData = null;
             length = 0;
+            packetIndex = 1;
+            totalRawDataPacketCount = 1;
         }
 
-        public void Prep(byte[] bytes, int size)
+        public void Prep(byte[] bytes, int size, int offset = 0)
         {
             if(size > NetworkConstants.dataBlobMaxPacketSize)
             {
                 throw new Exception(string.Format("blob size too large: {0}", size));
             }
-            int offset = 0;
-            length = size;
-            blob = new byte[length];
-            Buffer.BlockCopy(bytes, offset, blob, 0, length);
+            length = (short)size;
+            rawData = new byte[length];
+
+            Buffer.BlockCopy(bytes, offset, rawData, 0, length);
         }
         public override void Write(BinaryWriter writer)
         {
             base.Write(writer);
 
+            writer.Write(totalRawDataPacketCount);
+            writer.Write(packetIndex);
+            
             writer.Write(length);
-            writer.Write(blob, 0, length);
+            writer.Write(rawData, 0, length);
         }
         public override void Read(BinaryReader reader)
         {
             base.Read(reader);
-            length = reader.Read();
-            blob = null;
-            blob = new byte[length];
-            reader.Read(blob, 0, length);
+
+            totalRawDataPacketCount = reader.ReadInt16();
+            packetIndex = reader.ReadInt16();
+            
+            
+            length = reader.ReadInt16();
+            long remainingBuffer = reader.BaseStream.Length - reader.BaseStream.Position;
+            if (remainingBuffer < length)
+            {
+                throw new EndOfStreamException(string.Format("not enough buffer left: {0} needed, {1} remaining", length, remainingBuffer));
+            }
+            rawData = null;
+            rawData = new byte[length];
+            reader.Read(rawData, 0, length);
         }
     }
+
 
 }

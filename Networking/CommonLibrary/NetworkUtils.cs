@@ -3,7 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System;
+using System.Collections;
 using Vectors;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Packets;
 
 namespace Network
 {
@@ -102,7 +106,7 @@ namespace Network
         }
     }
 
-    public class PositionPacker : IBinarySerializable
+    public class PositionCompressed : IBinarySerializable
     {
         public long position = 0;
 
@@ -111,7 +115,7 @@ namespace Network
         {
             position = Pack(pos.x, pos.y, pos.z);
         }
-        public void CopyFrom(PositionPacker ext)
+        public void CopyFrom(PositionCompressed ext)
         {
             position = ext.position;
         }
@@ -280,5 +284,75 @@ namespace Network
             }
             return -1;
         }
+
+        
+        public class DatablobAccumulator
+        {
+            List<DataBlob> accumulator = new List<DataBlob>();
+            public bool Add( DataBlob blob )
+            {
+                Debug.Assert(accumulator.Count < blob.totalRawDataPacketCount);
+                accumulator.Add(blob);
+                if (accumulator.Count == blob.totalRawDataPacketCount)
+                    return true;
+
+                return false;
+            }
+
+            public void Clear()
+            {
+                accumulator = new List<DataBlob>();
+            }
+            public List<DataBlob> PrepToSendRawData(byte[] rawData, int size)
+            {
+                List<DataBlob> blobs = new List<DataBlob>();
+                int offset = 0;
+                int index = 0;
+                while (offset < size)
+                {
+                    DataBlob blob = (DataBlob)IntrepidSerialize.CreatePacket(PacketType.DataBlob);
+                    blob.totalRawDataPacketCount = 1;
+                    blob.packetIndex = (short)index++;
+                    int currentSize = size - offset;
+                    if (currentSize > NetworkConstants.dataBlobMaxPacketSize)
+                        currentSize = NetworkConstants.dataBlobMaxPacketSize;
+                    //if(currentSize > size - offset)
+
+                    blob.Prep(rawData, currentSize, offset);
+                    offset += currentSize;
+                    blobs.Add(blob);
+                }
+                foreach (var blob in blobs)
+                {
+                    blob.totalRawDataPacketCount = (short)index;
+                }
+                return blobs;
+            }
+
+            public  byte[] ConvertDatablobsIntoRawData(List<DataBlob> blobs = null)
+            {
+                int size = 0;
+                if (blobs == null)
+                    blobs = accumulator;
+
+                foreach (var blob in blobs)
+                {
+                    size += blob.length;
+                }
+                byte[] rawData = new byte[size];
+
+                int offset = 0;
+                foreach (var blob in blobs)
+                {
+                    Buffer.BlockCopy(blob.rawData, 0, rawData, offset, blob.length);
+                    offset += blob.length;
+                }
+
+                return rawData;
+
+            }
+        }
     }
+
+    
 }

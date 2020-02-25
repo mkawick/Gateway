@@ -34,7 +34,11 @@ namespace CommonLibrary
         }
 
         private Stopwatch timestampOfLastKeepAlive = new Stopwatch();
-        
+
+        public ConnectionState() 
+        {
+            // only for  mock state 
+        }
         public ConnectionState(Socket handler)
         {
             socket = new SocketWrapper(handler);
@@ -52,7 +56,7 @@ namespace CommonLibrary
             socket.Connect(); // actually start receiving
         }
 
-        private void Socket_OnPacketsReceived(IPacketSend externalSocket, Queue<BasePacket> packets)
+        protected virtual void Socket_OnPacketsReceived(IPacketSend externalSocket, Queue<BasePacket> packets)
         {
             if (packets.Count == 1)
             {
@@ -90,7 +94,7 @@ namespace CommonLibrary
             return deserializedPackets.Count > 0;
         }
 
-        public bool MarkedAsSocketClosed
+        public virtual bool MarkedAsSocketClosed
         {
             get { return !socket.IsConnected; }
         }
@@ -201,12 +205,12 @@ namespace CommonLibrary
             return result;
         }
 
-        public void Send(BasePacket packet)
+        public virtual void Send(BasePacket packet)
         {
             socket.Send(packet);
         }
         
-        public void Disconnect()
+        public virtual void Disconnect()
         {
             socket.Disconnect();
         }

@@ -10,7 +10,7 @@ namespace Test_Direct_ServerToClient
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Gateway");
+            Console.WriteLine("listening server");
             // Console.WriteLine("  Press L to login (auto login is set).");
             // Console.WriteLine("  Press P to update player position.");
             Console.WriteLine("  Press esc to exit.\n\n");
@@ -21,13 +21,17 @@ namespace Test_Direct_ServerToClient
             {
                 socketSettings = new SocketWrapperSettings("localhost", 11002);
             }
-            //LoginServerProxy loginServer = new LoginServerProxy(socketSettings);
-            //GatewayMain gateway = new GatewayMain(loginServer);
-            ServerController gateway = new ServerController();
+            LoginServerProxy loginServer = new LoginServerProxy(socketSettings);
+            ServerController controller = new ServerController(loginServer);
 
-            gateway.SetMaxFPS(NetworkConstants.GatewayFPS);
-            //loginServer.StartService();
-            gateway.StartService();
+            ServerMockConnectionState mock = new ServerMockConnectionState(controller);
+
+            controller.SetMaxFPS(NetworkConstants.GatewayFPS);
+            loginServer.StartService();
+            controller.StartService();
+
+            controller.NewServerConnection(mock);
+            mock.ConnectMock();
 
             ConsoleKey key;
             do
@@ -39,8 +43,8 @@ namespace Test_Direct_ServerToClient
                 key = Console.ReadKey(true).Key;
 
             } while (key != ConsoleKey.Escape);
-            //loginServer.Cleanup();
-            gateway.Cleanup();
+            loginServer.Cleanup();
+            controller.Cleanup();
         }
     }
 }

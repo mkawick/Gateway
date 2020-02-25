@@ -28,7 +28,7 @@ namespace Test_Direct_ServerToClient
             List<ServerConnectionState> newServersAwaitingConfirmation;
             List<PlayerConnectionState> newPlayersAwaitingConfirmation;
 
-            //ServerRegistry servers;
+            ServerRegistry servers;
             List<UserSocket> players;
             List<UserSocket> inactivePlayers;
 
@@ -46,21 +46,21 @@ namespace Test_Direct_ServerToClient
 
             ListenServer playerConnectionListener;
             ListenServer serverListener;
-            //LoginServerProxy loginServerProxy;
+            LoginServerProxy loginServerProxy;
 
             Stopwatch screenRefreshTimer;
             DateTime launchDate = DateTime.Now;
             long numPlayerPackets = 0, numPlayerPacketsLastTimeStamp = 0;
             long numServerPackets = 0, numServerPacketsLastTimeStamp = 0;
 
-            public ServerController() : base()
+            public ServerController(LoginServerProxy loginServer) : base()
             {
-                //servers = new ServerRegistry();
+                servers = new ServerRegistry();
                 players = new List<UserSocket>();
                 inactivePlayers = new List<UserSocket>();
 
-                //loginServerProxy = loginServer;
-                //loginServerProxy.OnNewPlayerLoggedIn += NewPlayerLoginResult;
+                loginServerProxy = loginServer;
+                loginServerProxy.OnNewPlayerLoggedIn += NewPlayerLoginResult;
 
                 playerConnectionListener = new ListenServer(NetworkConstants.defaultGatewayToClientPort, "0.0.0.0", "client-side");
                 playerConnectionListener.OnNewConnection += OnNewPlayerConnection;
@@ -189,7 +189,7 @@ namespace Test_Direct_ServerToClient
                     {
                         newPlayer.gameId = clientIdPacket.Id;
                         newPlayer.versionAndHandshakeComplete = true;
-                        //loginServerProxy.HandleNewConnection(newPlayer);
+                        loginServerProxy.HandleNewConnection(newPlayer);
                         IntrepidSerialize.ReturnToPool(packet);
                         continue;
                     }
@@ -285,11 +285,21 @@ namespace Test_Direct_ServerToClient
                 }
 
                 IPEndPoint remoteIpEndPoint = socket.RemoteEndPoint as IPEndPoint;
-                //Console.WriteLine("OnNewServerConnection {0}", remoteIpEndPoint.Address);
+                Console.WriteLine("OnNewServerConnection {0}", remoteIpEndPoint.Address);
                 NotifyEndpoint_ServerId(wrapper);
             }
+            public void NewServerConnection(ServerConnectionState server)// allows mock server
+            {
+                lock (connectedLock)
+                {
+                    newServersAwaitingConfirmation.Add(server);
+                bool isClosed = server.MarkedAsSocketClosed;// = false;
+                }
 
-            private void NotifyEndpoint_ServerId(ConnectionState connection)
+                NotifyEndpoint_ServerId(server);
+            }
+
+        private void NotifyEndpoint_ServerId(ConnectionState connection)
             {
                 ServerIdPacket packet = (ServerIdPacket)IntrepidSerialize.TakeFromPool(PacketType.ServerIdPacket);
                 packet.Type = ServerIdPacket.ServerType.Gateway;
@@ -314,14 +324,14 @@ namespace Test_Direct_ServerToClient
                         }
                     }
                 }
-             /*   foreach (var server in servers)
+                foreach (var server in servers)
                 {
                     if (server.MarkedAsSocketClosed == true)
                     {
                         servers.Remove(server);
                         Console.WriteLine("Server removed:{0} of type {1}", server.gameId, server.serverType);
                     }
-                }*/
+                }
             }
 
             void PromoteNewServers()
@@ -343,7 +353,7 @@ namespace Test_Direct_ServerToClient
                         // TODO: Send disconnect packet?
                         server.Disconnect();
                     }
-                   /* if (server.versionAndHandshakeComplete == true)// todo: timeout servers within a few seconds... prevent hacking.
+                    if (server.versionAndHandshakeComplete == true)// todo: timeout servers within a few seconds... prevent hacking.
                     {
                         if (!servers.Add(server))
                         {
@@ -357,14 +367,14 @@ namespace Test_Direct_ServerToClient
                         }
                         IPAddress remoteIpEndPoint = server.Address;
                         Console.WriteLine("OnNewServerConnection {0}", remoteIpEndPoint);
-                    }*/
+                    }
                 }
             }
             void NotifyGameServerThatPlayerHasDisconnected(int clientConnectionId, int gameId, int accountId)
             {
                 Console.WriteLine("Disconnect on gateway (2), connectionId: " + clientConnectionId);
 
-              /*  foreach (var server in servers)
+                foreach (var server in servers)
                 {
                     if (server.serverType != ServerIdPacket.ServerType.Game
                         || server.gameId == gameId)
@@ -374,7 +384,7 @@ namespace Test_Direct_ServerToClient
                         cdp.accountId = accountId;
                         server.Send(cdp);
                     }
-                }*/
+                }
             }
 
             #endregion SERVER_STATE
@@ -424,7 +434,7 @@ namespace Test_Direct_ServerToClient
                 }
             }
 
-        /*    void PassPendingPacketsOntoServers()
+            void PassPendingPacketsOntoServers()
             {
                 List<SocketPacketPair> tempPackets;
                 lock (containersLock)
@@ -437,7 +447,7 @@ namespace Test_Direct_ServerToClient
                 {
                     servers.RoutePacketToServers(pair);
                 }
-            }*/
+            }
 
             void MoveServerPacketsIntoOutgoingClients()
             {
@@ -449,7 +459,7 @@ namespace Test_Direct_ServerToClient
                 {
                     tempPlayerList = new List<UserSocket>(players);
                 }
-               /* foreach (var server in servers)
+                foreach (var server in servers)
                 {
                     if (server.HasNewData() == true)
                     {
@@ -508,7 +518,7 @@ namespace Test_Direct_ServerToClient
                             }
                         }
                     }
-                }*/
+                }
             }
 
             public void AddOutgoingPacket(BasePacket packet, int connectionId)
@@ -546,10 +556,11 @@ namespace Test_Direct_ServerToClient
                 foreach (var player in tempPlayers)
                 {
                     player.Update();
-                    //PassPendingPacketsOntoServers();
+                    
                 }
 
-                PassOutgoingPacketsOntoClients();
+            PassPendingPacketsOntoServers();
+            PassOutgoingPacketsOntoClients();
             }
             #endregion MARSHALLING_PACKETS
 

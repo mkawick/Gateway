@@ -1,4 +1,7 @@
-﻿using Packets;
+﻿#define DEBUG_NETWORK_PACKETS
+#define DEBUG_NETWORK_STREAM
+
+using Packets;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -114,7 +117,7 @@ namespace CommonLibrary
         /// <summary>
         /// Max size that we will scale the buffer up to
         /// </summary>
-        private const int MAX_BUFFER_SIZE = 256 * 1024; 
+        private const int MAX_BUFFER_SIZE = 8 * 1024 * 1024; 
 
         public bool IsConnected
         {
@@ -141,6 +144,7 @@ namespace CommonLibrary
         
         private byte[] readBuffer;
         private int readBufferOffset = 0;
+        int totalPacketsReceived = 0;
         
         private Queue<BasePacket> packetsReceived;
         private Queue<BasePacket> packetsToSend;
@@ -149,6 +153,7 @@ namespace CommonLibrary
         private BinaryWriter binaryWriter;
 
         static int incrementalId = 1024;
+        int numReceives = 0;
         int id = incrementalId++;
         public int Id { get { return id; } set { id = value; } }
         
@@ -504,7 +509,8 @@ namespace CommonLibrary
                 if (bytesRead > 0)
                 {
 #if DEBUG_NETWORK_STREAM
-                    Console.WriteLine("Received {0} bytes, giving {1} bytes unparsed", bytesRead, readBufferOffset + bytesRead);
+                    numReceives++;
+                    Console.WriteLine("Received {2}x for {0} bytes, giving {1} bytes unparsed", bytesRead, readBufferOffset + bytesRead, numReceives);
 #endif
                     ConvertBytesToPackets(readBuffer, readBufferOffset + bytesRead);
                     
@@ -539,8 +545,13 @@ namespace CommonLibrary
             List<BasePacket> dataIn = IntrepidSerialize.Deserialize(cheatArray, numBytes, ref bytesParsed);
             lock (packetsReceived)
             {
+                int num = packetsReceived.Count;
                 dataIn.ForEach((bp) => { packetsReceived.Enqueue(bp); });
+                totalPacketsReceived = packetsReceived.Count - num;
             }
+#if DEBUG_NETWORK_PACKETS
+            Console.WriteLine("totalCount of packets received {0}", totalPacketsReceived);
+#endif
 
             if (bytesParsed < numBytes)
             {

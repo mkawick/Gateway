@@ -1,9 +1,13 @@
+#define DEBUG_NETWORK_PACKETS
+
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using PacketTypes;
 using Network;
+
+
 
 // steps to add new packets
 // 1) Add the Packet type in the enum.. be sure that it's unique
@@ -178,7 +182,7 @@ namespace Packets
     {
         public override PacketType PacketType { get { return PacketType.WorldEntity; } }
 
-        public PositionPacker position = new PositionPacker();
+        public PositionCompressed position = new PositionCompressed();
         public RotationPacker rotation = new RotationPacker();
 
         public override void Write(BinaryWriter writer)
@@ -469,7 +473,10 @@ namespace Packets
                             // we start the read again from the start of the packet.
                             // critically, this must be the first thing that we do for each packet read.
                             amountRead = (int)reader.BaseStream.Position;
-                            /*int numBytesToRead =*/ Network.Utils.SetupRead(reader);                            
+#if DEBUG_NETWORK_PACKETS
+                            int numBytesToRead =
+#endif
+                                Network.Utils.SetupRead(reader);                            
 
                             ushort packetTypeId = reader.ReadUInt16();
                             var packetType = (PacketType)packetTypeId;

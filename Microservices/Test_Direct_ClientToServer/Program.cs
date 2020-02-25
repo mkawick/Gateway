@@ -1,19 +1,25 @@
 ﻿using Packets;
 using System;
+using System.Collections.Generic;
 using Vectors;
+using Network;
+using CommonLibrary;
+using Packets;
 
 namespace Test_Direct_ClientToServer
 {
     class Program
     {
+        public static object Uitls { get; private set; }
+
         static void Main(string[] args)
         {
             CommonLibrary.Parser.ParseCommandLine(args);
-            Int64 applicationId = CommonLibrary.Parser.ApplicationId;
+            Int64 applicationId = 1234;/*CommonLibrary.Parser.ApplicationId;
             if (applicationId == 0)
             {
                 applicationId = Network.Utils.GetIPBasedApplicationId();
-            }
+            }*/
             float sleepTime = 1000.0f / (float)CommonLibrary.Parser.FPS;
             string ipAddr = CommonLibrary.Parser.ipAddr;
 
@@ -89,10 +95,47 @@ namespace Test_Direct_ClientToServer
                     //DataBlob blob = new DataBlob();
                     DataBlob blob = (DataBlob)IntrepidSerialize.TakeFromPool(PacketType.DataBlob);
 
-                    int size = 100;
+                    int size = 800;
                     byte[] data = new byte[size];
+                    for (int i = 0; i < size; i++)
+                    {
+                        data[i] = (byte) i;
+                    }
                     blob.Prep(data, size);
+
                     testClient.Send(blob);
+                }
+                if(key == ConsoleKey.A)
+                {
+                    int size = 8000;
+                    byte[] data = new byte[size];
+                    for (int i = 0; i < size; i++)
+                    {
+                        data[i] = (byte)i;
+                    }
+                    Utils.DatablobAccumulator acc = new Utils.DatablobAccumulator();
+                    List<DataBlob> blobs = acc.PrepToSendRawData(data, size);
+
+                    foreach (var blob in blobs)
+                    {
+                        testClient.Send(blob);
+                    }
+                }
+                if (key == ConsoleKey.S)
+                {
+                    int size = 2000000;
+                    byte[] data = new byte[size];
+                    for (int i = 0; i < size; i++)
+                    {
+                        data[i] = (byte)i;
+                    }
+                    Utils.DatablobAccumulator acc = new Utils.DatablobAccumulator();
+                    List<DataBlob> blobs = acc.PrepToSendRawData(data, size);
+
+                    foreach (var blob in blobs)
+                    {
+                        testClient.Send(blob);
+                    }
                 }
             } while (key != ConsoleKey.Escape);
 
