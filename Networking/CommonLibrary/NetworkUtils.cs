@@ -301,6 +301,11 @@ namespace Network
 
             public void Clear()
             {
+                foreach (var blob in accumulator)
+                {
+                    IntrepidSerialize.ReturnToPool(blob);
+                }
+                
                 accumulator = new List<DataBlob>();
             }
             public List<DataBlob> PrepToSendRawData(byte[] rawData, int size)
