@@ -10,6 +10,10 @@ namespace Test_Direct_ClientToServer
     {
         public static object Uitls { get; private set; }
 
+        static void ImageReceived(byte[] bytes, int size)
+        {
+            Console.WriteLine("Data received");
+        }
         static void Main(string[] args)
         {
             CommonLibrary.Parser.ParseCommandLine(args);
@@ -20,6 +24,7 @@ namespace Test_Direct_ClientToServer
             }*/
             float sleepTime = 1000.0f / (float)CommonLibrary.Parser.FPS;
             string ipAddr = CommonLibrary.Parser.ipAddr;
+            ipAddr = "1192.168.30.214";
 
             Console.WriteLine("Client talking to Gateway.");
             Console.WriteLine("  Press L to login (auto login is set).");
@@ -29,6 +34,7 @@ namespace Test_Direct_ClientToServer
             Console.WriteLine("  Press esc to update player position.\n\n");
             ushort port = 11000;
             ClientController testClient = new ClientController(ipAddr, port, applicationId);
+            testClient.OnImageReceived += ImageReceived;
 
             ConsoleKey key;
             do
@@ -136,6 +142,14 @@ namespace Test_Direct_ClientToServer
                     {
                         testClient.Send(blob);
                     }
+                }
+                if (key == ConsoleKey.R)
+                {
+                    RequestPackets request = (RequestPackets)IntrepidSerialize.TakeFromPool(PacketType.RequestPackets);
+                    request.type = RequestPackets.RequestType.RequestRenderFrame;
+
+
+                    testClient.Send(request);
                 }
             } while (key != ConsoleKey.Escape);
 

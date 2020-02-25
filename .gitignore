@@ -3,6 +3,7 @@
 .suo
 .exe
 .dll
+
 **/debug/*
 **/release/*
 

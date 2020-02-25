@@ -2,6 +2,7 @@
 using Packets;
 using System;
 using System.Collections.Generic;
+using static Network.Utils;
 
 namespace Test_Direct_ClientToServer
 {
@@ -11,6 +12,9 @@ namespace Test_Direct_ClientToServer
         int numPacketsReceived = 0;
         bool isBoundToGateway = false;
         int entityId = 0;
+        DatablobAccumulator accumulator = new DatablobAccumulator();
+
+        public event Action<byte[], int> OnImageReceived;
 
         public bool isLoggedIn = false;
         SocketWrapper socket;
@@ -52,6 +56,17 @@ namespace Test_Direct_ClientToServer
             socket = null;
         }
 
+        void HandleBlobData(DataBlob packet)
+        {
+                if (accumulator.Add(packet as DataBlob) == true)
+                {
+                    byte[] bytes = accumulator.ConvertDatablobsIntoRawData();
+
+                    OnImageReceived?.Invoke(bytes, bytes.Length);
+                    accumulator.Clear();
+                }
+                return;
+        }
         void HandleNormalPackets(Queue<BasePacket> listOfPackets)
         {
             foreach (var packet in listOfPackets)
@@ -85,6 +100,10 @@ namespace Test_Direct_ClientToServer
                     ServerPingHopperPacket hopper = packet as ServerPingHopperPacket;
                     hopper.Stamp("client end");
                     hopper.PrintList();
+                }
+                if (packet.PacketType == PacketType.DataBlob)
+                {
+                    HandleBlobData(packet as DataBlob);
                 }
                 IntrepidSerialize.ReturnToPool(packet);
             }

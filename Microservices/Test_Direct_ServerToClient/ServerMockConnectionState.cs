@@ -6,6 +6,8 @@ using System.Text;
 using CommonLibrary;
 using Packets;
 using static Network.Utils;
+using System.IO;
+using Network;
 //using <iostream>
 
 namespace Test_Direct_ServerToClient
@@ -14,10 +16,18 @@ namespace Test_Direct_ServerToClient
     {
         ServerController controller;
         DatablobAccumulator accumulator = new DatablobAccumulator();
+        byte[] fileBytes;
+        int nextConnectionId;
         public ServerMockConnectionState(ServerController network)
         {
             serverType = ServerIdPacket.ServerType.Mock;
             controller = network;
+            SetupFileToPass();
+        }
+        void SetupFileToPass()
+        {
+            fileBytes = File.ReadAllBytes("c:/temp/skull.png");
+            
         }
         protected override void Socket_OnPacketsReceived(IPacketSend externalSocket, Queue<BasePacket> packets)
         {
@@ -51,7 +61,13 @@ namespace Test_Direct_ServerToClient
         }
         public override void  Send(BasePacket packet)
         {
-            if(packet.PacketType == PacketType.DataBlob)
+            ServerConnectionHeader sch = packet as ServerConnectionHeader;
+            if (sch != null)
+            {
+                nextConnectionId = sch.connectionId;
+                
+            }
+            if (packet.PacketType == PacketType.DataBlob)
             {
                 if(accumulator.Add(packet as DataBlob) == true)
                 {
@@ -59,7 +75,27 @@ namespace Test_Direct_ServerToClient
                     validateReceivedBuffer(bytes);
                     accumulator.Clear();
                 }
+                return;
             }
+            if(packet.PacketType == PacketType.RequestPackets)
+            {
+                if(fileBytes != null)
+                {
+                    Utils.DatablobAccumulator acc = new Utils.DatablobAccumulator();
+                    List<DataBlob> blobs = acc.PrepToSendRawData(fileBytes, fileBytes.Length);
+
+                    var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+                    Console.WriteLine(Timestamp);
+                    foreach (var blob in blobs)
+                    {
+                        ServerConnectionHeader gatewayHeader = (ServerConnectionHeader)IntrepidSerialize.TakeFromPool(PacketType.ServerConnectionHeader);
+                        gatewayHeader.connectionId = nextConnectionId;
+                        deserializedPackets.Add(gatewayHeader);
+                        deserializedPackets.Add(blob);
+                    }
+                }
+            }
+            IntrepidSerialize.ReturnToPool(packet);
         }
 
         public override bool MarkedAsSocketClosed

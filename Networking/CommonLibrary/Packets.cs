@@ -43,6 +43,8 @@ namespace Packets
         EntityDestroy = 143,
         NPCFull = 144,
 
+        RequestPackets = 170, 
+
         UserAccountRequest = 201,
         UserAccountResponse = 202,
 
@@ -403,6 +405,8 @@ namespace Packets
             listOfConstructors.Add(PacketType.PlayerFull, () =>                         { return new PlayerFullPacket(); });
             listOfConstructors.Add(PacketType.EntityDestroy, () =>                      { return new EntityDestroyPacket(); });
             listOfConstructors.Add(PacketType.NPCFull, () =>                            { return new NPCFullPacket(); });
+            
+            listOfConstructors.Add(PacketType.RequestPackets, () =>                     { return new RequestPackets(); });
 
             listOfConstructors.Add(PacketType.UserAccountRequest, () =>                 { return new UserAccountRequest(); });
             listOfConstructors.Add(PacketType.UserAccountResponse, () =>                { return new UserAccountResponse(); });

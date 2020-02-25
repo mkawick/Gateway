@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Test_Direct_ClientToServer": {
+      "commandName": "Project",
+      "commandLineArgs": "ipaddr=192.168.30.214"
+    }
+  }
+}
