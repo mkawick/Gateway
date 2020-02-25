@@ -78,6 +78,7 @@ namespace Packets
         Entity_MoveTo = 390,
         Entity_MoveAway = 391,
 
+        DataBlob = 401,
         TestPacket = 501
     }
 
@@ -432,6 +433,7 @@ namespace Packets
 
             listOfConstructors.Add(PacketType.Entity_MoveTo, () =>                      { return new Entity_MoveTo(); });
             listOfConstructors.Add(PacketType.Entity_MoveAway, () =>                    { return new Entity_MoveAway(); });
+            listOfConstructors.Add(PacketType.DataBlob, () =>                           { return new DataBlob(); });
             listOfConstructors.Add(PacketType.TestPacket, () =>                         { return new TestPacket(); });
             
 

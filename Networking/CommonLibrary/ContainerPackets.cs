@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using Network;
+using System;
 //using Linq;
 //using StringUtils;
 
@@ -109,5 +110,47 @@ namespace Packets
             listOfBlobs.Read(reader);
         }
     }
-    
+
+    public class DataBlob : BasePacket
+    {
+        public override PacketType PacketType { get { return PacketType.DataBlob; } }
+
+        public byte[] blob;
+        public int length;
+
+
+        public DataBlob() : base()
+        {
+            blob = null;
+            length = 0;
+        }
+
+        public void Prep(byte[] bytes, int size)
+        {
+            if(size > NetworkConstants.dataBlobMaxPacketSize)
+            {
+                throw new Exception(string.Format("blob size too large: {0}", size));
+            }
+            int offset = 0;
+            length = size;
+            blob = new byte[length];
+            Buffer.BlockCopy(bytes, offset, blob, 0, length);
+        }
+        public override void Write(BinaryWriter writer)
+        {
+            base.Write(writer);
+
+            writer.Write(length);
+            writer.Write(blob, 0, length);
+        }
+        public override void Read(BinaryReader reader)
+        {
+            base.Read(reader);
+            length = reader.Read();
+            blob = null;
+            blob = new byte[length];
+            reader.Read(blob, 0, length);
+        }
+    }
+
 }
