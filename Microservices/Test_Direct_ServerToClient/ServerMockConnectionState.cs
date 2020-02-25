@@ -38,13 +38,16 @@ namespace Test_Direct_ServerToClient
 
         void validateReceivedBuffer(byte[] bytes)
         {
-            for (int i = 0; i < bytes.Length; i++)
+       /*     for (int i = 0; i < bytes.Length; i++)
             {
                 byte val = bytes[i];
                 //Console.Write(val.ToString() + " ");
                 Debug.Assert(i % 256 == val);
-            }
+            }*/
             Console.WriteLine("all went well");
+            var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+            Console.WriteLine(Timestamp);
+
         }
         public override void  Send(BasePacket packet)
         {

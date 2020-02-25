@@ -1,4 +1,4 @@
-#define DEBUG_NETWORK_PACKETS
+//#define DEBUG_NETWORK_PACKETS
 
 using System;
 using System.IO;

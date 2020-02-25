@@ -1,5 +1,5 @@
-﻿#define DEBUG_NETWORK_PACKETS
-#define DEBUG_NETWORK_STREAM
+﻿//#define DEBUG_NETWORK_PACKETS
+//#define DEBUG_NETWORK_STREAM
 
 using Packets;
 using System;
@@ -67,7 +67,7 @@ namespace CommonLibrary
         /// <summary>
         /// Default size of the receive buffer
         /// </summary>
-        public const int DEFAULT_BUFFER_SIZE = 50 * 1024;
+        public const int DEFAULT_BUFFER_SIZE = 256 * 1024;
         /// <summary>
         /// Default number of connection attempts before we stop
         /// </summary>
@@ -153,7 +153,10 @@ namespace CommonLibrary
         private BinaryWriter binaryWriter;
 
         static int incrementalId = 1024;
+#if DEBUG_NETWORK_STREAM
         int numReceives = 0;
+#endif
+
         int id = incrementalId++;
         public int Id { get { return id; } set { id = value; } }
         

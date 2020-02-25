@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading;
-using Packets;
-using Vectors;
 using CommonLibrary;
 
 namespace Test_Direct_ServerToClient

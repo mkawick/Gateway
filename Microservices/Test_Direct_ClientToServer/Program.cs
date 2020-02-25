@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using Vectors;
 using Network;
-using CommonLibrary;
-using Packets;
 
 namespace Test_Direct_ClientToServer
 {
@@ -132,6 +130,8 @@ namespace Test_Direct_ClientToServer
                     Utils.DatablobAccumulator acc = new Utils.DatablobAccumulator();
                     List<DataBlob> blobs = acc.PrepToSendRawData(data, size);
 
+                    var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+                    Console.WriteLine(Timestamp);
                     foreach (var blob in blobs)
                     {
                         testClient.Send(blob);
