@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="..\..\Networking\CommonLibrary\**\*.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequestPackets.cs" />
+    <Compile Include="RequestPacket.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

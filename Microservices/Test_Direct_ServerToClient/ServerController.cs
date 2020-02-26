@@ -10,16 +10,6 @@ using Vectors;
 
 namespace Test_Direct_ServerToClient
 {
-    public class PlayerState
-    {
-        public int connectionId;
-        public int characterId;
-        public int accountId;
-        public int entityId;
-        public Vector3 position = new Vector3();
-        public Vector3 rotation = new Vector3();
-    }
-
     public class ServerController : ThreadWrapper
     {
             object connectedLock = new object();

@@ -19,18 +19,23 @@ namespace Test_Direct_ServerToClient
             {
                 socketSettings = new SocketWrapperSettings("localhost", 11002);
             }
+            Packets.IntrepidSerialize.Init();
             LoginServerProxy loginServer = new LoginServerProxy(socketSettings);
             ServerController controller = new ServerController(loginServer);
 
             ServerMockConnectionState mock = new ServerMockConnectionState(controller);
 
             controller.SetMaxFPS(NetworkConstants.GatewayFPS);
-            loginServer.StartService();
-            controller.StartService();
 
-            controller.NewServerConnection(mock);
+          
+            controller.StartService();
+            
+            
+            loginServer.StartService();
             mock.ConnectMock();
 
+            Thread.Sleep(1000);// allow systems to init
+            controller.NewServerConnection(mock);
             ConsoleKey key;
             do
             {

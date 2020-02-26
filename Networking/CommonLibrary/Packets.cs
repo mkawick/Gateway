@@ -43,7 +43,7 @@ namespace Packets
         EntityDestroy = 143,
         NPCFull = 144,
 
-        RequestPackets = 170, 
+        RequestPacket = 170, 
 
         UserAccountRequest = 201,
         UserAccountResponse = 202,
@@ -85,7 +85,13 @@ namespace Packets
         Entity_MoveAway = 391,
 
         DataBlob = 401,
-        TestPacket = 501
+        
+
+      /*  UserMove = 600,
+        UserSetPositionAndOrientation = 601,
+        UserCamera = 602,*/
+
+        TestPacket = 1200
     }
 
 
@@ -335,6 +341,11 @@ namespace Packets
 
         static IntrepidSerialize()
         {
+            Init();
+        }
+
+        public static void Init()
+        {
             // Initialize the factories and pools before
             // anyone asks us to create packets or deserialize anything
             SetupPacketFactory();
@@ -406,7 +417,7 @@ namespace Packets
             listOfConstructors.Add(PacketType.EntityDestroy, () =>                      { return new EntityDestroyPacket(); });
             listOfConstructors.Add(PacketType.NPCFull, () =>                            { return new NPCFullPacket(); });
             
-            listOfConstructors.Add(PacketType.RequestPackets, () =>                     { return new RequestPackets(); });
+            listOfConstructors.Add(PacketType.RequestPacket, () =>                      { return new RequestPacket(); });
 
             listOfConstructors.Add(PacketType.UserAccountRequest, () =>                 { return new UserAccountRequest(); });
             listOfConstructors.Add(PacketType.UserAccountResponse, () =>                { return new UserAccountResponse(); });
@@ -442,8 +453,8 @@ namespace Packets
             listOfConstructors.Add(PacketType.Entity_MoveTo, () =>                      { return new Entity_MoveTo(); });
             listOfConstructors.Add(PacketType.Entity_MoveAway, () =>                    { return new Entity_MoveAway(); });
             listOfConstructors.Add(PacketType.DataBlob, () =>                           { return new DataBlob(); });
-            listOfConstructors.Add(PacketType.TestPacket, () =>                         { return new TestPacket(); });
             
+            listOfConstructors.Add(PacketType.TestPacket, () =>                         { return new TestPacket(); });
 
         }
         public static List<BasePacket> Deserialize(byte[] bytes, int maxBufferSize, ref int amountRead)

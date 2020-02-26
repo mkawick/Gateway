@@ -90,4 +90,30 @@ namespace Packets
             connectionId = typedPacket.connectionId;
         }
     }
+
+    /*public class UserMovePacket : BasePacket
+    {
+        public override PacketType PacketType { get { return PacketType.UserMove; } }
+
+
+        public int Id { get; set; }
+
+        public override void Write(BinaryWriter writer)
+        {
+            base.Write(writer);
+            writer.Write(Id);
+        }
+        public override void Read(BinaryReader reader)
+        {
+            base.Read(reader);
+            Id = reader.ReadInt32();
+        }
+
+        public override void CopyFrom(BasePacket packet)
+        {
+            base.CopyFrom(packet);
+            var typedPacket = (ClientIdPacket)packet;
+            Id = typedPacket.Id;
+        }
+    }*/
 }

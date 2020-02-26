@@ -4,9 +4,9 @@ using Vectors;
 
 namespace Packets
 {
-    public class RequestPackets : BasePacket
+    public class RequestPacket : BasePacket
     {
-        public override PacketType PacketType { get { return PacketType.RequestPackets; } }
+        public override PacketType PacketType { get { return PacketType.RequestPacket; } }
 
         public enum RequestType
         {

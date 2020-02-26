@@ -145,8 +145,8 @@ namespace Test_Direct_ClientToServer
                 }
                 if (key == ConsoleKey.R)
                 {
-                    RequestPackets request = (RequestPackets)IntrepidSerialize.TakeFromPool(PacketType.RequestPackets);
-                    request.type = RequestPackets.RequestType.RequestRenderFrame;
+                    RequestPacket request = (RequestPacket)IntrepidSerialize.TakeFromPool(PacketType.RequestPacket);
+                    request.type = RequestPacket.RequestType.RequestRenderFrame;
 
 
                     testClient.Send(request);
