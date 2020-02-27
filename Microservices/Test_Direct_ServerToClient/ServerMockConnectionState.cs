@@ -9,6 +9,7 @@ using static Network.Utils;
 using System.IO;
 using Network;
 using Vectors;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace Test_Direct_ServerToClient
 {
@@ -18,14 +19,44 @@ namespace Test_Direct_ServerToClient
         public int characterId;
         public int accountId;
         public int entityId;
+        public bool requestedRenderFrame = false;
         public Vector3 position = new Vector3();
         public Vector3 rotation = new Vector3();
+        public bool isDirty = false;
+
+        public byte[] renderBuffer = null;
+        public void Set(Vector3 p, Vector3 r)
+        {
+            position = p;
+            rotation = r;
+            isDirty = true;
+        }
+        public void Clear()
+        {
+            isDirty = false;
+            requestedRenderFrame = false;
+        }
+        public int SetupRenderBuffer(int w, int h, int bytesPerPixel)
+        {
+            int size = w * h * bytesPerPixel;
+            if (renderBuffer != null)
+                return size;
+
+            renderBuffer = new byte[size];
+            return size;
+        }
+    }
+    interface INeedsExternalUpdate
+    {
+        void Update();
     }
 
-    class ServerMockConnectionState : ServerConnectionState
+    class ServerMockConnectionState : ServerConnectionState, INeedsExternalUpdate
     {
         ServerController controller;
         DatablobAccumulator accumulator = new DatablobAccumulator();
+        Core.PillarInterfaces.IRenderer renderer;
+
         byte[] fileBytes;
         int nextConnectionId;
         int userIdCounter = 1024;
@@ -37,13 +68,19 @@ namespace Test_Direct_ServerToClient
             serverType = ServerIdPacket.ServerType.Mock;
             controller = network;
             playerIds = new List<PlayerState>();
+            renderer = null;
 
             SetupFileToPass();
+        }
+
+        public void SetupRenderer(Core.PillarInterfaces.IRenderer r)
+        {
+            renderer = r;
         }
         void SetupFileToPass()
         {
             fileBytes = File.ReadAllBytes("c:/temp/skull.png");
-            
+
         }
         protected override void Socket_OnPacketsReceived(IPacketSend externalSocket, Queue<BasePacket> packets)
         {
@@ -62,58 +99,124 @@ namespace Test_Direct_ServerToClient
             //controller.Send(serverId);
         }
 
-     /*   void validateReceivedBuffer(byte[] bytes)
-        {
-            for (int i = 0; i < bytes.Length; i++)
+        /*   void validateReceivedBuffer(byte[] bytes)
             {
-                byte val = bytes[i];
-                //Console.Write(val.ToString() + " ");
-                Debug.Assert(i % 256 == val);
-            }
-            Console.WriteLine("all went well");
-            var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-            Console.WriteLine(Timestamp);
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    byte val = bytes[i];
+                    //Console.Write(val.ToString() + " ");
+                    Debug.Assert(i % 256 == val);
+                }
+                Console.WriteLine("all went well");
+                var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+                Console.WriteLine(Timestamp);
 
-        }*/
-        public override void  Send(BasePacket packet)
+            }*/
+
+        PlayerState GetPlayerState(int id)
+        {
+            foreach (var playerId in playerIds)
+            {
+                if (playerId.entityId == id)
+                {
+                    return playerId;
+                }
+            }
+            return null;
+        }
+        public override void Send(BasePacket packet)
         {
             ServerConnectionHeader sch = packet as ServerConnectionHeader;
             if (sch != null)
             {
                 nextConnectionId = sch.connectionId;
-                
-            }
-          /*  if (packet.PacketType == PacketType.DataBlob)
-            {
-                if(accumulator.Add(packet as DataBlob) == true)
-                {
-                    byte[] bytes = accumulator.ConvertDatablobsIntoRawData();
-                    validateReceivedBuffer(bytes);
-                    accumulator.Clear();
-                }
-                return;
-            }*/
-            if(packet.PacketType == PacketType.RequestPacket)
-            {
-                if(fileBytes != null)
-                {
-                    Utils.DatablobAccumulator acc = new Utils.DatablobAccumulator();
-                    List<DataBlob> blobs = acc.PrepToSendRawData(fileBytes, fileBytes.Length);
 
-                    var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-                    Console.WriteLine(Timestamp);
-                    foreach (var blob in blobs)
+            }
+            /*  if (packet.PacketType == PacketType.DataBlob)
+                {
+                    if(accumulator.Add(packet as DataBlob) == true)
                     {
-                        ServerConnectionHeader gatewayHeader = (ServerConnectionHeader)IntrepidSerialize.TakeFromPool(PacketType.ServerConnectionHeader);
-                        gatewayHeader.connectionId = nextConnectionId;
-                        deserializedPackets.Add(gatewayHeader);
-                        deserializedPackets.Add(blob);
+                        byte[] bytes = accumulator.ConvertDatablobsIntoRawData();
+                        validateReceivedBuffer(bytes);
+                        accumulator.Clear();
                     }
-                }
+                    return;
+                }*/
+
+
+
+            if (packet.PacketType == PacketType.RequestPacket)
+            {
+                // Set camera position on renderer and rotation
+                // call to Michaelangelo
+
+                // requestedRenderFrame
+                PlayerState ps = GetPlayerState(nextConnectionId);
+                if (ps != null)
+                    ps.requestedRenderFrame = true;
+
             }
 
             HandlePlayerPackets(packet);
             IntrepidSerialize.ReturnToPool(packet);
+        }
+
+        void SendBytesToPlayer(int connectionId, byte[] bytes)
+        {
+            Utils.DatablobAccumulator acc = new Utils.DatablobAccumulator();
+            List<DataBlob> blobs = acc.PrepToSendRawData(bytes, bytes.Length);
+
+            var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+            Console.WriteLine(Timestamp);
+            foreach (var blob in blobs)
+            {
+                ServerConnectionHeader gatewayHeader = (ServerConnectionHeader)IntrepidSerialize.TakeFromPool(PacketType.ServerConnectionHeader);
+                gatewayHeader.connectionId = connectionId;
+                deserializedPackets.Add(gatewayHeader);
+                deserializedPackets.Add(blob);
+            }
+        }
+
+        public void Update()
+        {
+            HandleRequestsForFrame();
+        }
+        void SetupCamerMatrix(PlayerState ps)
+        {
+            Matrix<float> mat = Matrix<float>.Build.Dense(4, 4);
+            float[] id = { 1, 1, 1, 1 };
+            mat.SetDiagonal(id);
+            //mat.Row(3). = playerId.position.x;
+            mat[3, 0] = ps.position.x;
+            mat[3, 1] = ps.position.y;
+            mat[3, 2] = ps.position.z;
+            renderer.UpdateCameraMatrix(mat);
+            // TODO, setup rotation too. 
+            //ps.rotation;
+        }
+        void HandleRequestsForFrame()
+        {
+            foreach (var playerId in playerIds)
+            {
+                if (playerId.requestedRenderFrame == true)
+                {
+                    if (renderer != null)
+                    {
+                        if (playerId.isDirty)
+                            SetupCamerMatrix(playerId);
+
+                        int size = playerId.SetupRenderBuffer(1280, 720, 4);
+                        renderer.GetRenderFrame(playerId.renderBuffer, size);
+
+                        SendBytesToPlayer(playerId.connectionId, playerId.renderBuffer);
+                    }
+                    else if (fileBytes != null)
+                    {
+                        SendBytesToPlayer(playerId.connectionId, fileBytes);
+                    }
+                    playerId.Clear();
+                }
+            }
         }
 
         void HandlePlayerPackets(BasePacket packet)
@@ -132,7 +235,7 @@ namespace Test_Direct_ServerToClient
                 HandlePlayerSaveState(packet as PlayerSaveStatePacket);
                 return;
             }
-            if(packet.PacketType == PacketType.WorldEntity)
+            if (packet.PacketType == PacketType.WorldEntity)
             {
                 WorldEntityPacket wep = packet as WorldEntityPacket;
                 if (wep != null)
@@ -141,8 +244,7 @@ namespace Test_Direct_ServerToClient
                     {
                         if (playerId.entityId == wep.entityId)
                         {
-                            playerId.position = wep.position.Get();
-                            playerId.rotation = wep.rotation.Get();
+                            playerId.Set(wep.position.Get(), wep.rotation.Get());
 
                             //SendAllEntityPositions();
                         }
@@ -167,8 +269,10 @@ namespace Test_Direct_ServerToClient
             EntityPacket entityNotification = (EntityPacket)IntrepidSerialize.TakeFromPool(PacketType.Entity);
             entityNotification.entityId = ps.entityId;
 
-            socket.Send(gatewayHeader);
-            socket.Send(entityNotification);
+            deserializedPackets.Add(gatewayHeader);
+            deserializedPackets.Add(entityNotification);
+            /* socket.Send(gatewayHeader);
+                socket.Send(entityNotification);*/
         }
 
         public override bool MarkedAsSocketClosed
@@ -176,14 +280,15 @@ namespace Test_Direct_ServerToClient
             get { return false; }
         }
 
-        public override IPAddress Address 
+        public override IPAddress Address
         {
-            
-            get {
+
+            get
+            {
                 byte[] address = { 192, 168, 0, 1 };
-                IPAddress addr = new IPAddress(address); 
-                return remoteIpEndPoint.Address; 
-            } 
+                IPAddress addr = new IPAddress(address);
+                return addr;/// remoteIpEndPoint.Address;
+            }
         }
     }
 }

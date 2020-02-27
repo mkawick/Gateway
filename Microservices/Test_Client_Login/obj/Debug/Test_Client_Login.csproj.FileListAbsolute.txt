@@ -41,7 +41,6 @@ D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\bin\Debug\CommonLibr
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\bin\Debug\NDesk.Options.dll
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\bin\Debug\CommonLibrary.pdb
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\bin\Debug\CommonLibrary.dll.config
-D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.csprojAssemblyReference.cache
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.csproj.CopyComplete
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.exe
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.pdb
