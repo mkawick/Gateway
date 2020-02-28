@@ -71,32 +71,14 @@ namespace Test_Direct_ClientToServer
         }
         void HandleBlobData(DataBlob packet)
         {
-            int sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
-            if (accumulator.BlobCount == 307)
-            {
-                Console.Write("looking for extra processes\n");
-            }
+            //int sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
             if (accumulator.Add(packet as DataBlob) == true)
             {
-                sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
-                if (accumulator.BlobCount == 307)
-                {
-                    Console.Write("looking for extra processes\n");
-                }
-                if (sizeOfBlobs!= 3686400 || accumulator.BlobCount == 307)
-                {
-                    Console.Write("wtf\n");
-                }
+                //int sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
                 int numBlobs = accumulator.BlobCount;
-
-
                 byte[] bytes = accumulator.ConvertDatablobsIntoRawData();
 
                 int len = bytes.Length;
-                if(len != sizeOfBlobs || len != 3686400)
-                {
-                    Console.Write("wtf\n");
-                }
                 OnImageReceived?.Invoke(bytes, bytes.Length);
                     
                 accumulator.Clear();
@@ -124,6 +106,7 @@ namespace Test_Direct_ClientToServer
                     {
                         Console.Write("Entity update packet {0}\n", tempEntityId);
                     }
+                    entityId = tempEntityId;
                     continue;
                 }
                 KeepAlive ka = packet as KeepAlive;
