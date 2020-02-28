@@ -23,6 +23,9 @@ namespace Test_Direct_ServerToClient
         public Vector3 position = new Vector3();
         public Vector3 rotation = new Vector3();
         public bool isDirty = false;
+        public RenderSettings settings = new RenderSettings();
+        long timeStampOfLastRenderFrame = 0;
+
 
         public byte[] renderBuffer = null;
         public void Set(Vector3 p, Vector3 r)
@@ -45,12 +48,32 @@ namespace Test_Direct_ServerToClient
             renderBuffer = new byte[size];
             return size;
         }
-    }
-    interface INeedsExternalUpdate
-    {
-        void Update();
-    }
 
+        public void TimeStampForFPS(long milliseconds)
+        {
+            timeStampOfLastRenderFrame = milliseconds;
+        }
+        public void UpdateForFPS(long milliseconds)
+        {
+
+            if (settings.maxFPS == -1)
+                return;
+
+            long fps = settings.maxFPS;
+            if (fps > 90)
+                fps = 90;
+            if (fps < 5)
+                fps = 5;
+            long timeout = 1000 / fps;
+            long timeElapsed = milliseconds - timeStampOfLastRenderFrame;
+            if(timeElapsed > timeout)
+            {
+                timeStampOfLastRenderFrame = milliseconds;
+                requestedRenderFrame = true;
+            }
+
+        }
+    }
     class ServerMockConnectionState : ServerConnectionState, INeedsExternalUpdate
     {
         ServerController controller;
@@ -161,7 +184,7 @@ namespace Test_Direct_ServerToClient
             IntrepidSerialize.ReturnToPool(packet);
         }
 
-        void SendBytesToPlayer(int connectionId, byte[] bytes)
+        void SendAccumulatorToPlayer(int connectionId, byte[] bytes)
         {
             Utils.DatablobAccumulator acc = new Utils.DatablobAccumulator();
             List<DataBlob> blobs = acc.PrepToSendRawData(bytes, bytes.Length);
@@ -196,8 +219,10 @@ namespace Test_Direct_ServerToClient
         }
         void HandleRequestsForFrame()
         {
+            long milliseconds = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             foreach (var playerId in playerIds)
             {
+                playerId.UpdateForFPS(milliseconds);
                 if (playerId.requestedRenderFrame == true)
                 {
                     if (renderer != null)
@@ -208,12 +233,13 @@ namespace Test_Direct_ServerToClient
                         int size = playerId.SetupRenderBuffer(1280, 720, 4);
                         renderer.GetRenderFrame(playerId.renderBuffer, size);
 
-                        SendBytesToPlayer(playerId.connectionId, playerId.renderBuffer);
+                        SendAccumulatorToPlayer(playerId.connectionId, playerId.renderBuffer);
                     }
                     else if (fileBytes != null)
                     {
-                        SendBytesToPlayer(playerId.connectionId, fileBytes);
+                        SendAccumulatorToPlayer(playerId.connectionId, fileBytes);
                     }
+                    playerId.TimeStampForFPS(milliseconds);
                     playerId.Clear();
                 }
             }
@@ -252,6 +278,23 @@ namespace Test_Direct_ServerToClient
                     return;
                 }
             }
+            if (packet.PacketType == PacketType.RenderSettings)
+            {
+                RenderSettings rs = packet as RenderSettings;
+                if (rs != null)
+                {
+                    foreach (var playerId in playerIds)
+                    {
+                        if (playerId.entityId == nextConnectionId)
+                        {
+                            
+                            playerId.settings= rs;
+
+                        }
+                    }
+                    return;
+                }
+            }
         }
         void HandlePlayerSaveState(PlayerSaveStatePacket pss)
         {
@@ -282,7 +325,6 @@ namespace Test_Direct_ServerToClient
 
         public override IPAddress Address
         {
-
             get
             {
                 byte[] address = { 192, 168, 0, 1 };

@@ -15,11 +15,18 @@ namespace Test_Direct_ServerToClient
         //Timer aTimer;
 
         public PlayerConnectionState(Socket handler) : base(handler)
-        {}
+        {
+            
+        }
 
         void SendPacketAndSetForImmediateDisconnect(BasePacket bp)
         {
             socket.Disconnect();
         }
+
+          public bool IsKeepAliveValid()
+          {
+              return true;
+          }
     }
 }

@@ -114,4 +114,43 @@ namespace Packets
         }
     }
 
+        
+    public class RenderSettings : BasePacket
+    {
+        public override PacketType PacketType { get { return PacketType.RenderSettings; } }
+
+        public enum RenderFormat
+        {
+            RGBA,
+            RGB
+        }
+        public int screenWidth, screenHeight;
+        public RenderFormat screenFormat;
+        public int maxFPS;
+
+        public RenderSettings()
+        {
+            screenWidth = 1280; screenHeight = 720;
+            screenFormat = RenderFormat.RGBA;
+            maxFPS = -1;
+        }
+
+        public override void Write(BinaryWriter writer)
+        {
+            base.Write(writer);
+            writer.Write(screenWidth);
+            writer.Write(screenHeight);
+            writer.Write((int)screenFormat);
+            writer.Write(maxFPS);
+        }
+
+        public override void Read(BinaryReader reader)
+        {
+            base.Read(reader);
+            screenWidth = reader.ReadInt32();
+            screenHeight = reader.ReadInt32();
+            screenFormat = (RenderFormat) reader.ReadInt32();
+            maxFPS = reader.ReadInt32();
+        }
+    }
 }

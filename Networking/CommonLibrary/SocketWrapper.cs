@@ -440,6 +440,16 @@ namespace CommonLibrary
             hasCreatedSocket = false;
         }
 
+       /* bool IsSocketConnected()
+        {
+            bool part1 = socketConnection.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (socketConnection.Available == 0);
+            if (part1 && part2)
+                return false;
+            else
+                return true;
+        }*/
+
         private void FailSocket()
         {
             // Socket has most likely been closed

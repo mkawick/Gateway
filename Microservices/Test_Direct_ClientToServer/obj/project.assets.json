@@ -50,6 +50,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "D:\\Develop\\MOP\\renderer\\radical_stub\\build": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

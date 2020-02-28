@@ -6,13 +6,15 @@ using static Network.Utils;
 
 namespace Test_Direct_ClientToServer
 {
-    class ClientController
+    class ClientController : INeedsExternalUpdate
     {
         Int64 applicationId;
         int numPacketsReceived = 0;
         bool isBoundToGateway = false;
         int entityId = 0;
         DatablobAccumulator accumulator = new DatablobAccumulator();
+
+        Queue<BasePacket> receivedPackets = new Queue<BasePacket>();
 
         public event Action<byte[], int> OnImageReceived;
 
@@ -21,7 +23,7 @@ namespace Test_Direct_ClientToServer
 
         public ClientController(string serverRemoteAddr, ushort serverPort, Int64 appId = 15)
         {
-            socket = new SocketWrapper("localhost", 11000);
+            socket = new SocketWrapper(serverRemoteAddr, 11000);
 
             applicationId = appId;
             socket.OnPacketsReceived += Sock_OnPacketsReceived;
@@ -56,16 +58,47 @@ namespace Test_Direct_ClientToServer
             socket = null;
         }
 
+        public void Update()
+        {
+            Queue<BasePacket> workingPackets;
+            lock (receivedPackets)
+            {
+                workingPackets = receivedPackets;
+                receivedPackets = new Queue<BasePacket>();
+            }
+
+            HandleNormalPackets(workingPackets);
+        }
         void HandleBlobData(DataBlob packet)
         {
-                if (accumulator.Add(packet as DataBlob) == true)
+            if (accumulator.Add(packet as DataBlob) == true)
+            {
+                int sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
+                if (accumulator.BlobCount == 307)
                 {
-                    byte[] bytes = accumulator.ConvertDatablobsIntoRawData();
-
-                    OnImageReceived?.Invoke(bytes, bytes.Length);
-                    accumulator.Clear();
+                    Console.Write("looking for extra processes\n");
                 }
-                return;
+                if (sizeOfBlobs!= 3686400 || accumulator.BlobCount == 307)
+                {
+                    Console.Write("wtf\n");
+                }
+                int numBlobs = accumulator.BlobCount;
+
+
+                byte[] bytes = accumulator.ConvertDatablobsIntoRawData();
+
+                int len = bytes.Length;
+                if(len != sizeOfBlobs || len != 3686400)
+                {
+                    Console.Write("wtf\n");
+                }
+                OnImageReceived?.Invoke(bytes, bytes.Length);
+                    
+                accumulator.Clear();
+                Console.Write("Blobs received in acc {0}\n", numBlobs);
+                Console.Write("Bytes received in blob {0}\n", len);
+            }
+            return;
         }
         void HandleNormalPackets(Queue<BasePacket> listOfPackets)
         {
@@ -115,7 +148,14 @@ namespace Test_Direct_ClientToServer
             {
                 if (isLoggedIn == true)
                 {
-                    HandleNormalPackets(listOfPackets);
+                    //HandleNormalPackets(listOfPackets);
+                    lock(receivedPackets)
+                    {
+                        foreach (var packet in listOfPackets)
+                        {
+                            receivedPackets.Enqueue(packet);
+                        }
+                    }
                 }
                 else
                 {

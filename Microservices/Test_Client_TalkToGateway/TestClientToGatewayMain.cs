@@ -82,7 +82,7 @@ namespace Test_Client_TalkToGateway
                 }
                 if (key == ConsoleKey.T)
                 {
-                    Console.WriteLine("Major list of crap to send");
+                    Console.WriteLine("Sending round trip");
                     ServerPingHopperPacket hopper = (ServerPingHopperPacket)IntrepidSerialize.TakeFromPool(PacketType.ServerPingHopper);
                     hopper.Stamp("client start");
                     testClient.Send(hopper);

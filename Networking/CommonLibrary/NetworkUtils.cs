@@ -212,7 +212,20 @@ namespace Network
             // Bind to the interface for a single given address or ip
             IPHostEntry ipHostInfo = Dns.GetHostEntry(name.Trim());
             // TODO: probably want to allow IPv6 selection in the future
-            return ipHostInfo.AddressList.FirstOrDefault(e => e.AddressFamily == AddressFamily.InterNetwork);
+            IPAddress ip = ipHostInfo.AddressList.FirstOrDefault(e => e.AddressFamily == AddressFamily.InterNetwork);
+            if (ip == null)
+            {
+                ip = ipHostInfo.AddressList.FirstOrDefault(e => e.AddressFamily == AddressFamily.InterNetworkV6);
+            }
+            if (ip == null)
+            {
+                ipHostInfo = Dns.GetHostEntry("localhost"); //  may want a flag here eventually
+                ip = ipHostInfo.AddressList.FirstOrDefault(e => e.AddressFamily == AddressFamily.InterNetwork);
+                if (ip == null)
+                    ip = ipHostInfo.AddressList.FirstOrDefault(e => e.AddressFamily == AddressFamily.InterNetworkV6);
+            }
+            Debug.Assert(ip != null);
+            return ip;
         }
 
         public static IPAddress GetOwnIPAddress()
@@ -285,10 +298,12 @@ namespace Network
             return -1;
         }
 
-        
+
         public class DatablobAccumulator
         {
             List<DataBlob> accumulator = new List<DataBlob>();
+
+            public int BlobCount { get{return accumulator.Count;} }
             public bool Add( DataBlob blob )
             {
                 Debug.Assert(accumulator.Count < blob.totalRawDataPacketCount);
@@ -301,6 +316,7 @@ namespace Network
 
             public void Clear()
             {
+                // blobs should already be freed
                 foreach (var blob in accumulator)
                 {
                     IntrepidSerialize.ReturnToPool(blob);
@@ -355,6 +371,17 @@ namespace Network
 
                 return rawData;
 
+            }
+            public int GetSizeOfAllBlobs(List<DataBlob> blobs = null)
+            {
+                if (blobs == null)
+                    blobs = accumulator;
+                int size = 0;
+                foreach (var blob in blobs)
+                {
+                    size += blob.length;
+                }
+                return size;
             }
         }
     }

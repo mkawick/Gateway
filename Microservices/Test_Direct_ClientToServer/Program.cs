@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Vectors;
 using Network;
+using System.Threading;
 
 namespace Test_Direct_ClientToServer
 {
@@ -24,7 +25,7 @@ namespace Test_Direct_ClientToServer
             }*/
             float sleepTime = 1000.0f / (float)CommonLibrary.Parser.FPS;
             string ipAddr = CommonLibrary.Parser.ipAddr;
-            ipAddr = "1192.168.30.214";
+            ipAddr = "192.168.30.214";
 
             Console.WriteLine("Client talking to Gateway.");
             Console.WriteLine("  Press L to login (auto login is set).");
@@ -41,7 +42,8 @@ namespace Test_Direct_ClientToServer
             {
                 while (!Console.KeyAvailable)
                 {
-
+                    Thread.Sleep(20);
+                    testClient.Update();
                 }
                 key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.L)
@@ -51,6 +53,28 @@ namespace Test_Direct_ClientToServer
                     cred.playerName.Copy("mickey");
                     testClient.Send(cred);
                     Console.WriteLine("login sent.");
+                }
+                if (key == ConsoleKey.D5)
+                {
+                    RenderSettings settings = (RenderSettings)IntrepidSerialize.TakeFromPool(PacketType.RenderSettings);
+                    settings.screenWidth = 1280;
+                    settings.screenHeight = 720;
+                    settings.screenFormat = RenderSettings.RenderFormat.RGBA;
+                    settings.maxFPS = 4;
+
+                    testClient.Send(settings);
+                    Console.WriteLine("settings sent.");
+                }
+                if (key == ConsoleKey.D6)
+                {
+                    RenderSettings settings = (RenderSettings)IntrepidSerialize.TakeFromPool(PacketType.RenderSettings);
+                    settings.screenWidth = 1280;
+                    settings.screenHeight = 720;
+                    settings.screenFormat = RenderSettings.RenderFormat.RGBA;
+                    settings.maxFPS = -1;
+
+                    testClient.Send(settings);
+                    Console.WriteLine("settings sent.");
                 }
 
                 if (key == ConsoleKey.P)

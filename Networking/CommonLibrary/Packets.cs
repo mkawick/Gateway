@@ -86,7 +86,7 @@ namespace Packets
 
         DataBlob = 401,
         
-
+        RenderSettings = 500,
       /*  UserMove = 600,
         UserSetPositionAndOrientation = 601,
         UserCamera = 602,*/
@@ -453,7 +453,9 @@ namespace Packets
             listOfConstructors.Add(PacketType.Entity_MoveTo, () =>                      { return new Entity_MoveTo(); });
             listOfConstructors.Add(PacketType.Entity_MoveAway, () =>                    { return new Entity_MoveAway(); });
             listOfConstructors.Add(PacketType.DataBlob, () =>                           { return new DataBlob(); });
-            
+
+            listOfConstructors.Add(PacketType.RenderSettings, () =>                     { return new RenderSettings(); });
+
             listOfConstructors.Add(PacketType.TestPacket, () =>                         { return new TestPacket(); });
 
         }

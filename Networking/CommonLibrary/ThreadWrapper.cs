@@ -3,6 +3,11 @@ using System.Threading;
 
 namespace CommonLibrary
 {
+    public interface INeedsExternalUpdate// used to help when you are not running a thread
+    {
+        void Update();
+    }
+
     public abstract class ThreadWrapper
     {
         public int configuredSleep = 10;
