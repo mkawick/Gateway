@@ -129,6 +129,11 @@ namespace Packets
             totalRawDataPacketCount = 1;
         }
 
+        override public void Dispose() 
+        {
+            rawData = null;// cleanup
+        }
+
         public void Prep(byte[] bytes, int size, int offset = 0)
         {
             if(size > NetworkConstants.dataBlobMaxPacketSize)

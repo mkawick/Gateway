@@ -71,9 +71,14 @@ namespace Test_Direct_ClientToServer
         }
         void HandleBlobData(DataBlob packet)
         {
+            int sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
+            if (accumulator.BlobCount == 307)
+            {
+                Console.Write("looking for extra processes\n");
+            }
             if (accumulator.Add(packet as DataBlob) == true)
             {
-                int sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
+                sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
                 if (accumulator.BlobCount == 307)
                 {
                     Console.Write("looking for extra processes\n");
@@ -138,7 +143,13 @@ namespace Test_Direct_ClientToServer
                 {
                     HandleBlobData(packet as DataBlob);
                 }
-                IntrepidSerialize.ReturnToPool(packet);
+            }
+            foreach (var packet in listOfPackets)
+            {
+                if (packet.PacketType != PacketType.DataBlob)// tyhese need special handling
+                {
+                    IntrepidSerialize.ReturnToPool(packet);
+                }
             }
         }
         private void Sock_OnPacketsReceived(IPacketSend arg1, Queue<BasePacket> listOfPackets)

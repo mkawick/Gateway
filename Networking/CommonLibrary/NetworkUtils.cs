@@ -307,6 +307,12 @@ namespace Network
             public bool Add( DataBlob blob )
             {
                 Debug.Assert(accumulator.Count < blob.totalRawDataPacketCount);
+                if (accumulator.Count > 1)
+                {
+                    //Debug.Assert(blob.packetIndex != accumulator[accumulator.Count - 1].packetIndex);
+                    if (blob.packetIndex == accumulator[accumulator.Count - 1].packetIndex)
+                        return false;
+                }
                 accumulator.Add(blob);
                 if (accumulator.Count == blob.totalRawDataPacketCount)
                     return true;
