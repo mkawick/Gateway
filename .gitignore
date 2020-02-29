@@ -1,10 +1,11 @@
 .pch
 .ipch
-.suo
-.exe
+*.suo
+*.exe
 *.dll
 *.ide
 
+Debug
 **/Debug/*
 **/obj/*
 **/release/*
@@ -12,4 +13,19 @@
 *csproj.*
 
 FileListAbsolute*
+*FileListAbsolute.txt
+
+*.dll
+*.pdb
+*.suo
+*.Publish.xml
+*.tmproj
+.DS_Store
+*.cache
+bin
+Bin
+App_Data
+App_data
+*~
+*FileListAbsolute.txt
 
