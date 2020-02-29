@@ -34,3 +34,13 @@ D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_TalkToGateway\obj\D
 D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.csproj.CopyComplete
 D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.exe
 D:\Develop\Console\Gateway\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.pdb
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\Test_Client_TalkToGateway.exe.config
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\Test_Client_TalkToGateway.exe
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\Test_Client_TalkToGateway.pdb
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\CommonLibrary.dll
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\NDesk.Options.dll
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\CommonLibrary.pdb
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\CommonLibrary.dll.config
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.csproj.CopyComplete
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.exe
+D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.pdb
