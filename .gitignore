@@ -2,21 +2,24 @@
 .ipch
 .suo
 .exe
-.dll
+*.dll
+*.ide
 
-**/debug/*
+**/Debug/*
+**/obj
 **/release/*
+**/sqlite3
+**/storage.ide
+*.cache
+
 
 *.dll
-*.dll
-*.dll
-*.dll
+**/CommonLibrary.dll
+
 Microservices/HeadlessClient01/bin/Debug/CommonLibrary.dll
 Microservices/Gateway/bin/Debug/CommonLibrary.dll
 Microservices/CommonLibrary/obj/Debug/CommonLibrary.dll
-Microservices/.vs/GatewayAndCommon/v15/Server/sqlite3/storage.ide-wal
-Microservices/.vs/GatewayAndCommon/v15/Server/sqlite3/storage.ide-shm
-Microservices/.vs/GatewayAndCommon/v15/Server/sqlite3/storage.ide
+
 Microservices/Gateway/obj/Debug/Gateway.csprojAssemblyReference.cache
 Microservices/HeadlessClient01/bin/Debug/CommonLibrary.dll
 Microservices/LoginServer/bin/Debug/CommonLibrary.dll

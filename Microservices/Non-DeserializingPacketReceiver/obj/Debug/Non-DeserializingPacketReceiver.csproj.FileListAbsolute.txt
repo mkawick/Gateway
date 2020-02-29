@@ -34,14 +34,3 @@ D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.csproj.CopyComplete
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.exe
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.pdb
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\Non-DeserializingPacketReceiver.exe.config
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\Non-DeserializingPacketReceiver.exe
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\Non-DeserializingPacketReceiver.pdb
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\CommonLibrary.dll
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\NDesk.Options.dll
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\CommonLibrary.pdb
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\CommonLibrary.dll.config
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.csprojAssemblyReference.cache
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.csproj.CopyComplete
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.exe
-D:\Develop\Personal\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.pdb
