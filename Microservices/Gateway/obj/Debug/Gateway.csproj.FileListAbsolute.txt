@@ -41,7 +41,6 @@ D:\Develop\Personal\Gateway\Microservices\Gateway\bin\Debug\CommonLibrary.dll
 D:\Develop\Personal\Gateway\Microservices\Gateway\bin\Debug\NDesk.Options.dll
 D:\Develop\Personal\Gateway\Microservices\Gateway\bin\Debug\CommonLibrary.pdb
 D:\Develop\Personal\Gateway\Microservices\Gateway\bin\Debug\CommonLibrary.dll.config
-D:\Develop\Personal\Gateway\Microservices\Gateway\obj\Debug\Gateway.csprojAssemblyReference.cache
 D:\Develop\Personal\Gateway\Microservices\Gateway\obj\Debug\Gateway.csproj.CopyComplete
 D:\Develop\Personal\Gateway\Microservices\Gateway\obj\Debug\Gateway.exe
 D:\Develop\Personal\Gateway\Microservices\Gateway\obj\Debug\Gateway.pdb

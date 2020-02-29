@@ -9,9 +9,7 @@
 **/obj/*
 **/release/*
 *.cache
-*.FileListAbsolute.txt
+*csproj.*
 
-**/*.dll
-**/*.txt
-**/*.FileListAbsolute.txt
+FileListAbsolute*
 

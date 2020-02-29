@@ -49,7 +49,6 @@ D:\Develop\Personal\Gateway\Microservices\LoginServer\bin\Debug\NDesk.Options.dl
 D:\Develop\Personal\Gateway\Microservices\LoginServer\bin\Debug\CommonLibrary.pdb
 D:\Develop\Personal\Gateway\Microservices\LoginServer\bin\Debug\CommonLibrary.dll.config
 D:\Develop\Personal\Gateway\Microservices\LoginServer\bin\Debug\Npgsql.xml
-D:\Develop\Personal\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csprojAssemblyReference.cache
 D:\Develop\Personal\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csproj.CopyComplete
 D:\Develop\Personal\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.exe
 D:\Develop\Personal\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.pdb
