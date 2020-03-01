@@ -48,7 +48,7 @@ namespace CommonLibrary
         /// </summary>
         /// <param name="bp"></param>
         void Send(BasePacket bp);
-        
+
         /// <summary>
         /// Attempt to connect to the remote host.
         /// </summary>
@@ -59,6 +59,16 @@ namespace CommonLibrary
         /// </summary>
         void Disconnect();
 
+    }
+
+    public interface IPacketAnalyzer
+    {
+        void Send(BasePacket bp);
+        void Receive(BasePacket bp);
+
+        void Update();
+        void Analyze();
+        void Clear();
     }
 
     [Serializable]
@@ -156,7 +166,7 @@ namespace CommonLibrary
 #if DEBUG_NETWORK_STREAM
         int numReceives = 0;
 #endif
-
+        IPacketAnalyzer analyzer;
         int id = incrementalId++;
         public int Id { get { return id; } set { id = value; } }
         
@@ -240,6 +250,11 @@ namespace CommonLibrary
             binaryWriter = new BinaryWriter(memoryStream);
         }
 
+        public void Set(IPacketAnalyzer an)
+        {
+            analyzer = an;
+        }
+
         //---------------------------------------------------------------
 
         public void Connect()
@@ -271,6 +286,10 @@ namespace CommonLibrary
                     {
                         BeginReceive();
                         isWaitingToListen = false;
+                    }
+                    if(analyzer != null)
+                    {
+                        analyzer.Update();
                     }
                 }
                 else if (CanAttemptToConnectNow())
@@ -560,6 +579,10 @@ namespace CommonLibrary
                 dataIn.ForEach((bp) => { packetsReceived.Enqueue(bp); });
                 totalPacketsReceived = packetsReceived.Count - num;
             }
+            if (analyzer != null)
+            {
+                dataIn.ForEach((bp) => { analyzer.Send(bp); });
+            }
 #if DEBUG_NETWORK_PACKETS
             Console.WriteLine("totalCount of packets received {0}", totalPacketsReceived);
 #endif
@@ -581,6 +604,10 @@ namespace CommonLibrary
             lock (packetsToSend)
             {
                 packetsToSend.Enqueue(bp);
+            }
+            if (analyzer != null)
+            {
+                analyzer.Send(bp);
             }
             //ThreadPool.QueueUserWorkItem(ThreadProc, this);
         }
