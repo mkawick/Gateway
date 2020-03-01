@@ -21,6 +21,7 @@ namespace Test_Direct_ClientToServer
         public bool isLoggedIn = false;
         SocketWrapper socket;
 
+        //------------------------------- lifetime --------------------------
         public ClientController(string serverRemoteAddr, ushort serverPort, Int64 appId = 15)
         {
             socket = new SocketWrapper(serverRemoteAddr, 11000);
@@ -41,21 +42,10 @@ namespace Test_Direct_ClientToServer
             }
         }
 
-        private void Sock_OnConnect(IPacketSend sender)
+        //------------------------------- socket and update ----------------
+        public void Send(BasePacket bp)
         {
-            if (socket != sender)
-                return;
-
-            ClientIdPacket clientId = (ClientIdPacket)IntrepidSerialize.TakeFromPool(PacketType.ClientIdPacket);
-            clientId.Id = (int) applicationId;
-            sender.Send(clientId);
-        }
-        public void Sock_OnDisconnect(IPacketSend sender, bool willRetry)
-        {
-            socket.OnConnect -= Sock_OnConnect;
-            socket.OnDisconnect -= Sock_OnDisconnect;
-            socket.OnConnect -= Sock_OnConnect;
-            socket = null;
+            socket.Send(bp);
         }
 
         public void Update()
@@ -69,6 +59,87 @@ namespace Test_Direct_ClientToServer
 
             HandleNormalPackets(workingPackets);
         }
+
+        //------------------------------- events --------------------------
+        private void Sock_OnConnect(IPacketSend sender)
+        {
+            if (socket != sender)
+                return;
+
+            ClientIdPacket clientId = (ClientIdPacket)IntrepidSerialize.TakeFromPool(PacketType.ClientIdPacket);
+            clientId.Id = (int)applicationId;
+            sender.Send(clientId);
+        }
+        public void Sock_OnDisconnect(IPacketSend sender, bool willRetry)
+        {
+            socket.OnConnect -= Sock_OnConnect;
+            socket.OnDisconnect -= Sock_OnDisconnect;
+            socket.OnConnect -= Sock_OnConnect;
+            socket = null;
+        }
+        private void Sock_OnPacketsReceived(IPacketSend arg1, Queue<BasePacket> listOfPackets)
+        {
+            // all of these boolean checks should be replaced by a Strategy
+            if (isBoundToGateway == true)
+            {
+                if (isLoggedIn == true)
+                {
+                    //HandleNormalPackets(listOfPackets);
+                    lock (receivedPackets)
+                    {
+                        foreach (var packet in listOfPackets)
+                        {
+                            receivedPackets.Enqueue(packet);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var packet in listOfPackets)
+                    {
+                        LoginCredentialValid lcr = packet as LoginCredentialValid;
+                        if (lcr != null)
+                        {
+                            LoginClientReady temp = (LoginClientReady)IntrepidSerialize.TakeFromPool(PacketType.LoginClientReady);
+                            Send(temp);
+
+                            ClientGameInfoResponse cgir = (ClientGameInfoResponse)IntrepidSerialize.TakeFromPool(PacketType.ClientGameInfoResponse);
+                            cgir.GameId = (int)applicationId;
+                            Send(cgir);
+
+                            isLoggedIn = lcr.isValid;
+                        }
+                        if (entityId == 0)// until we are assigned an entity id, we can't do much
+                        {
+                            EntityPacket ep = packet as EntityPacket;
+                            if (ep != null)
+                            {
+                                entityId = ep.entityId;
+                            }
+                        }
+                        numPacketsReceived++;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var packet in listOfPackets)
+                {
+                    numPacketsReceived++;
+                    if (packet is ServerIdPacket)
+                    {
+                        ServerIdPacket id = packet as ServerIdPacket;
+                        if (id != null && id.Type == ServerIdPacket.ServerType.Gateway)
+                        {
+                            isBoundToGateway = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        //------------------------------- helpers --------------------------
         void HandleBlobData(DataBlob packet)
         {
             //int sizeOfBlobs = accumulator.GetSizeOfAllBlobs();
@@ -80,7 +151,7 @@ namespace Test_Direct_ClientToServer
 
                 int len = bytes.Length;
                 OnImageReceived?.Invoke(bytes, bytes.Length);
-                    
+
                 accumulator.Clear();
                 Console.Write("Blobs received in acc {0}\n", numBlobs);
                 Console.Write("Bytes received in blob {0}\n", len);
@@ -135,71 +206,6 @@ namespace Test_Direct_ClientToServer
                 }
             }
         }
-        private void Sock_OnPacketsReceived(IPacketSend arg1, Queue<BasePacket> listOfPackets)
-        {
-            // all of these boolean checks should be replaced by a Strategy
-            if (isBoundToGateway == true)
-            {
-                if (isLoggedIn == true)
-                {
-                    //HandleNormalPackets(listOfPackets);
-                    lock(receivedPackets)
-                    {
-                        foreach (var packet in listOfPackets)
-                        {
-                            receivedPackets.Enqueue(packet);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (var packet in listOfPackets)
-                    {
-                        LoginCredentialValid lcr = packet as LoginCredentialValid;
-                        if (lcr != null)
-                        {
-                            LoginClientReady temp = (LoginClientReady)IntrepidSerialize.TakeFromPool(PacketType.LoginClientReady);
-                            Send(temp);
 
-                            ClientGameInfoResponse cgir = (ClientGameInfoResponse)IntrepidSerialize.TakeFromPool(PacketType.ClientGameInfoResponse);
-                            cgir.GameId = (int) applicationId;
-                            Send(cgir);
-
-                            isLoggedIn = lcr.isValid;
-                        }
-                        if (entityId == 0)// until we are assigned an entity id, we can't do much
-                        {
-                            EntityPacket ep = packet as EntityPacket;
-                            if (ep != null)
-                            {
-                                entityId = ep.entityId;
-                            }
-                        }
-                        numPacketsReceived++;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var packet in listOfPackets)
-                {
-                    numPacketsReceived++;
-                    if (packet is ServerIdPacket)
-                    {
-                        ServerIdPacket id = packet as ServerIdPacket;
-                        if (id != null && id.Type == ServerIdPacket.ServerType.Gateway)
-                        {
-                            isBoundToGateway = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        public void Send(BasePacket bp)
-        {
-            socket.Send(bp);
-        }
     }
 }

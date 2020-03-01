@@ -1,9 +1,8 @@
 ﻿using Packets;
-using System;
 using System.IO;
 using static StringUtils;
 
-namespace PacketTypes
+namespace Packets
 {
     public class UserAccountRequest : BasePacket
     {

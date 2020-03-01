@@ -2,7 +2,6 @@
 using System;
 using CommonLibrary;
 using Packets;
-using PacketTypes;
 
 namespace Test_Direct_ServerToClient
 {

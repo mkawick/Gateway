@@ -1,5 +1,6 @@
 ﻿using Packets;
 using System;
+using CommonLibrary;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -181,10 +182,6 @@ namespace Non_DeserializingPacketReceiver
 
         protected override void ThreadTick()
         {
-            ThreadUpdate();
-        }
-        protected void ThreadUpdate()
-        {
             try
             {
                 if (hasCreatedSocket == true)
@@ -218,7 +215,7 @@ namespace Non_DeserializingPacketReceiver
 
         static void ThreadProc(Object stateInfo)
         {
-            (stateInfo as SocketWrapper2).ThreadUpdate();
+            (stateInfo as SocketWrapper2).ThreadTick();
         }
 
         //---------------------------------------------------------------
@@ -440,7 +437,7 @@ namespace Non_DeserializingPacketReceiver
 #if DEBUG_NETWORK_STREAM
                     Console.WriteLine("Received {0} bytes, giving {1} bytes unparsed", bytesRead, readBufferOffset + bytesRead);
 #endif
-                    ConvertBytesToPackets(readBuffer, readBufferOffset + bytesRead);
+                    IncommingBytesToPackets(readBuffer, readBufferOffset + bytesRead);
 
                     // Try to grab more immediately
                     BeginReceive();
@@ -464,7 +461,7 @@ namespace Non_DeserializingPacketReceiver
             //ThreadPool.QueueUserWorkItem(ThreadProc, this);
         }
 
-        private void ConvertBytesToPackets(byte[] bytes, int numBytes)
+        private void IncommingBytesToPackets(byte[] bytes, int numBytes)
         {
             byte[] cheatArray = new byte[numBytes];// this is a terrible temp solution
             Buffer.BlockCopy(bytes, 0, cheatArray, 0, numBytes);

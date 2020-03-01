@@ -221,7 +221,7 @@ namespace CommonLibrary
             socketConnection = socket;
             hasCreatedSocket = true;
             BeginReceive();
-            ThreadUpdate();
+            ThreadTick();
         }
 
         //-------------------------------------------------------------------------------
@@ -253,10 +253,6 @@ namespace CommonLibrary
         }
 
         protected override void ThreadTick()
-        {
-            ThreadUpdate();
-        }
-        protected void ThreadUpdate()
         {
             try
             {
@@ -291,7 +287,7 @@ namespace CommonLibrary
 
         static void ThreadProc(Object stateInfo)
         {
-            (stateInfo as SocketWrapper).ThreadUpdate();
+            (stateInfo as SocketWrapper).ThreadTick();
         }
 
         //---------------------------------------------------------------
@@ -525,7 +521,7 @@ namespace CommonLibrary
                     numReceives++;
                     Console.WriteLine("Received {2}x for {0} bytes, giving {1} bytes unparsed", bytesRead, readBufferOffset + bytesRead, numReceives);
 #endif
-                    ConvertBytesToPackets(readBuffer, readBufferOffset + bytesRead);
+                    IncommingBytesToPackets(readBuffer, readBufferOffset + bytesRead);
                     
                     // Try to grab more immediately
                     BeginReceive();
@@ -549,11 +545,13 @@ namespace CommonLibrary
             //ThreadPool.QueueUserWorkItem(ThreadProc, this);
         }
 
-        private void ConvertBytesToPackets(byte[] bytes, int numBytes)
+        private void IncommingBytesToPackets(byte[] bytes, int numBytes)
         {
             byte[] cheatArray = new byte[numBytes];// this is a terrible temp solution
             Buffer.BlockCopy(bytes, 0, cheatArray, 0, numBytes);
-            //Console.WriteLine("Received: " + BitConverter.ToString(cheatArray));
+#if DEBUG_NETWORK_PACKETS
+            Console.WriteLine("Received: " + BitConverter.ToString(cheatArray));
+#endif
             int bytesParsed = 0;
             List<BasePacket> dataIn = IntrepidSerialize.Deserialize(cheatArray, numBytes, ref bytesParsed);
             lock (packetsReceived)
@@ -652,9 +650,9 @@ namespace CommonLibrary
             {
                 /*#if DEBUG_NETWORK_PACKETS
                                 Console.WriteLine("Failed to send packet {0}", packet);
-                #endif*/
+#endif*/
 
-                lock (packetsToSend)
+            lock (packetsToSend)
                 {
                     foreach (var bp in packetList)
                     {

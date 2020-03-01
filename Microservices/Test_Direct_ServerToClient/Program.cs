@@ -19,7 +19,7 @@ namespace Test_Direct_ServerToClient
             {
                 socketSettings = new SocketWrapperSettings("localhost", 11002);
             }
-            Packets.IntrepidSerialize.Init();
+            IntrepidSerialize.Init();
             LoginServerProxy loginServer = new LoginServerProxy(socketSettings);
             ServerController controller = new ServerController(loginServer);
 
