@@ -3,7 +3,7 @@ using Packets;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace Test_Direct_ServerToClient
+namespace Testing
 {
     public class ServerRegistry : IEnumerable<ServerConnectionState>
     {

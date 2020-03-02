@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace Test_Direct_ServerToClient
+namespace Testing
 {
     public class PlayerConnectionState : ConnectionState
     {

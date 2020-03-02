@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using CommonLibrary;
 
-namespace Test_Direct_ServerToClient
+namespace Testing
 {
     public class UserSocket
     {

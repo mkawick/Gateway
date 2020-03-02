@@ -166,7 +166,7 @@ namespace CommonLibrary
 #if DEBUG_NETWORK_STREAM
         int numReceives = 0;
 #endif
-        IPacketAnalyzer analyzer;
+        IPacketAnalyzer packetAnalyzer;
         int id = incrementalId++;
         public int Id { get { return id; } set { id = value; } }
         
@@ -252,7 +252,7 @@ namespace CommonLibrary
 
         public void Set(IPacketAnalyzer an)
         {
-            analyzer = an;
+            packetAnalyzer = an;
         }
 
         //---------------------------------------------------------------
@@ -287,9 +287,9 @@ namespace CommonLibrary
                         BeginReceive();
                         isWaitingToListen = false;
                     }
-                    if(analyzer != null)
+                    if(packetAnalyzer != null)
                     {
-                        analyzer.Update();
+                        packetAnalyzer.Update();
                     }
                 }
                 else if (CanAttemptToConnectNow())
@@ -579,9 +579,9 @@ namespace CommonLibrary
                 dataIn.ForEach((bp) => { packetsReceived.Enqueue(bp); });
                 totalPacketsReceived = packetsReceived.Count - num;
             }
-            if (analyzer != null)
+            if (packetAnalyzer != null)
             {
-                dataIn.ForEach((bp) => { analyzer.Send(bp); });
+                dataIn.ForEach((bp) => { packetAnalyzer.Send(bp); });
             }
 #if DEBUG_NETWORK_PACKETS
             Console.WriteLine("totalCount of packets received {0}", totalPacketsReceived);
@@ -605,9 +605,9 @@ namespace CommonLibrary
             {
                 packetsToSend.Enqueue(bp);
             }
-            if (analyzer != null)
+            if (packetAnalyzer != null)
             {
-                analyzer.Send(bp);
+                packetAnalyzer.Send(bp);
             }
             //ThreadPool.QueueUserWorkItem(ThreadProc, this);
         }

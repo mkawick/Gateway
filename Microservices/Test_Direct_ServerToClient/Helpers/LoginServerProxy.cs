@@ -3,7 +3,7 @@ using System;
 using CommonLibrary;
 using Packets;
 
-namespace Test_Direct_ServerToClient
+namespace Testing
 {
     public class LoginServerProxy : ThreadWrapper
     {

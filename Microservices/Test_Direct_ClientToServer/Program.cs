@@ -35,7 +35,7 @@ namespace Test_Direct_ClientToServer
             Console.WriteLine("  ** application id = {0} **", applicationId);
             Console.WriteLine("  Press esc to update player position.\n\n");
             ushort port = 11000;
-            ClientController testClient = new ClientController(ipAddr, port, applicationId);
+            Testing.ClientController testClient = new Testing.ClientController(ipAddr, port, applicationId);
             testClient.OnImageReceived += ImageReceived;
 
             ConsoleKey key;
