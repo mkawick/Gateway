@@ -78,7 +78,6 @@ namespace Testing
 
         //------------------------------------------------------------------------------
 
-
         #region KeepAlive
         void ManageServerKeepAlive()
         {

@@ -1,22 +1,23 @@
-﻿using Packets;
+﻿using CommonLibrary;
+using Network;
+using Packets;
 using System;
 using System.Collections.Generic;
-using Vectors;
-using Network;
 using System.Threading;
-using CommonLibrary;
+using Vectors;
 
 namespace Test_Direct_ClientToServer
 {
-    class Program
+    internal class Program
     {
         public static object Uitls { get; private set; }
 
-        static void ImageReceived(byte[] bytes, int size)
+        private static void ImageReceived(byte[] bytes, int size)
         {
             Console.WriteLine("Data received");
         }
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
             CommonLibrary.Parser.ParseCommandLine(args);
             Int64 applicationId = 1234;/*CommonLibrary.Parser.ApplicationId;
@@ -28,7 +29,7 @@ namespace Test_Direct_ClientToServer
             string ipAddr = CommonLibrary.Parser.ipAddr;
             ipAddr = "192.168.30.214";
 
-            Console.WriteLine("Client talking to Gateway.");
+            Console.WriteLine("Client talking to Server.");
             Console.WriteLine("  Press L to login (auto login is set).");
             Console.WriteLine("  Press P to update player position.");
             Console.WriteLine("  Press K to change to main player position.");
@@ -54,6 +55,17 @@ namespace Test_Direct_ClientToServer
                     cred.playerName.Copy("mickey");
                     testClient.Send(cred);
                     Console.WriteLine("login sent.");
+                }
+                if (key == ConsoleKey.D4)
+                {
+                    RenderSettings settings = (RenderSettings)IntrepidSerialize.TakeFromPool(PacketType.RenderSettings);
+                    settings.screenWidth = 1280;
+                    settings.screenHeight = 720;
+                    settings.screenFormat = RenderSettings.RenderFormat.RGBA;
+                    settings.maxFPS = 20;
+
+                    testClient.Send(settings);
+                    Console.WriteLine("settings sent.");
                 }
                 if (key == ConsoleKey.D5)
                 {
@@ -117,7 +129,7 @@ namespace Test_Direct_ClientToServer
                     hopper.Stamp("client start");
                     testClient.Send(hopper);
                 }
-                if(key == ConsoleKey.B)
+                if (key == ConsoleKey.B)
                 {
                     Console.WriteLine("Sending blob");
 
@@ -128,13 +140,13 @@ namespace Test_Direct_ClientToServer
                     byte[] data = new byte[size];
                     for (int i = 0; i < size; i++)
                     {
-                        data[i] = (byte) i;
+                        data[i] = (byte)i;
                     }
                     blob.Prep(data, size);
 
                     testClient.Send(blob);
                 }
-                if(key == ConsoleKey.A)
+                if (key == ConsoleKey.A)
                 {
                     int size = 8000;
                     byte[] data = new byte[size];

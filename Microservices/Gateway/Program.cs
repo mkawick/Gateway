@@ -4,13 +4,13 @@ using System.Threading;
 
 namespace Gateway
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Gateway");
-           // Console.WriteLine("  Press L to login (auto login is set).");
-           // Console.WriteLine("  Press P to update player position.");
+            // Console.WriteLine("  Press L to login (auto login is set).");
+            // Console.WriteLine("  Press P to update player position.");
             Console.WriteLine("  Press esc to exit.\n\n");
 
             bool testAgainstRealLoginServer = false;
@@ -33,7 +33,7 @@ namespace Gateway
                     Thread.Sleep(20);
                 }
                 key = Console.ReadKey(true).Key;
-               
+
             } while (key != ConsoleKey.Escape);
             loginServer.Cleanup();
             gateway.Cleanup();

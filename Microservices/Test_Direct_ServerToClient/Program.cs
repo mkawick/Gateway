@@ -1,13 +1,13 @@
-﻿using System;
+﻿using CommonLibrary;
+using System;
 using System.Threading;
-using CommonLibrary;
 using Testing;
 
 namespace Test_Direct_ServerToClient
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("listening server");
             // Console.WriteLine("  Press L to login (auto login is set).");
@@ -27,11 +27,8 @@ namespace Test_Direct_ServerToClient
             ServerMockConnectionState mock = new ServerMockConnectionState(controller);
 
             controller.SetMaxFPS(NetworkConstants.GatewayFPS);
-
-          
             controller.StartService();
-            
-            
+
             loginServer.StartService();
             mock.ConnectMock();
 

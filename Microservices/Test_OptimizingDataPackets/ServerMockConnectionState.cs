@@ -13,67 +13,6 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace Testing
 {
-    public class PlayerState
-    {
-        public int connectionId;
-        public int characterId;
-        public int accountId;
-        public int entityId;
-        public bool requestedRenderFrame = false;
-        public Vector3 position = new Vector3();
-        public Vector3 rotation = new Vector3();
-        public bool isDirty = false;
-        public RenderSettings settings = new RenderSettings();
-        long timeStampOfLastRenderFrame = 0;
-
-
-        public byte[] renderBuffer = null;
-        public void Set(Vector3 p, Vector3 r)
-        {
-            position = p;
-            rotation = r;
-            isDirty = true;
-        }
-        public void Clear()
-        {
-            isDirty = false;
-            requestedRenderFrame = false;
-        }
-        public int SetupRenderBuffer(int w, int h, int bytesPerPixel)
-        {
-            int size = w * h * bytesPerPixel;
-            if (renderBuffer != null)
-                return size;
-
-            renderBuffer = new byte[size];
-            return size;
-        }
-
-        public void TimeStampForFPS(long milliseconds)
-        {
-            timeStampOfLastRenderFrame = milliseconds;
-        }
-        public void UpdateForFPS(long milliseconds)
-        {
-
-            if (settings.maxFPS == -1)
-                return;
-
-            long fps = settings.maxFPS;
-            if (fps > 90)
-                fps = 90;
-            if (fps < 5)
-                fps = 5;
-            long timeout = 1000 / fps;
-            long timeElapsed = milliseconds - timeStampOfLastRenderFrame;
-            if(timeElapsed > timeout)
-            {
-                timeStampOfLastRenderFrame = milliseconds;
-                requestedRenderFrame = true;
-            }
-
-        }
-    }
     class ServerMockConnectionState : ServerConnectionState, INeedsExternalUpdate
     {
         ServerController controller;
@@ -86,6 +25,21 @@ namespace Testing
         int GetNewUserId() { return userIdCounter++; }
         List<PlayerState> playerIds;
 
+        public override IPAddress Address
+        {
+            get
+            {
+                byte[] address = { 192, 168, 0, 1 };
+                IPAddress addr = new IPAddress(address);
+                return addr;/// remoteIpEndPoint.Address;
+            }
+        }
+
+
+        /// <summary>
+        /// ////////////////////////////////////////// c'tor /////////////////////////////////////
+        /// </summary>
+        /// <param name="network"></param>
         public ServerMockConnectionState(ServerController network)
         {
             serverType = ServerIdPacket.ServerType.Mock;
@@ -99,11 +53,6 @@ namespace Testing
         public void SetupRenderer(Core.PillarInterfaces.IRenderer r)
         {
             renderer = r;
-        }
-        void SetupFileToPass()
-        {
-            fileBytes = File.ReadAllBytes("c:/temp/skull.png");
-
         }
         protected override void Socket_OnPacketsReceived(IPacketSend externalSocket, Queue<BasePacket> packets)
         {
@@ -122,20 +71,6 @@ namespace Testing
             //controller.Send(serverId);
         }
 
-        /*   void validateReceivedBuffer(byte[] bytes)
-            {
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    byte val = bytes[i];
-                    //Console.Write(val.ToString() + " ");
-                    Debug.Assert(i % 256 == val);
-                }
-                Console.WriteLine("all went well");
-                var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-                Console.WriteLine(Timestamp);
-
-            }*/
-
         PlayerState GetPlayerState(int id)
         {
             foreach (var playerId in playerIds)
@@ -153,7 +88,6 @@ namespace Testing
             if (sch != null)
             {
                 nextConnectionId = sch.connectionId;
-
             }
             /*  if (packet.PacketType == PacketType.DataBlob)
                 {
@@ -204,7 +138,7 @@ namespace Testing
         {
             HandleRequestsForFrame();
         }
-        void SetupCamerMatrix(PlayerState ps)
+        void SetupCameraMatrix(PlayerState ps)
         {
             Matrix<float> mat = Matrix<float>.Build.Dense(4, 4);
             float[] id = { 1, 1, 1, 1 };
@@ -228,7 +162,7 @@ namespace Testing
                     if (renderer != null)
                     {
                         if (playerId.isDirty)
-                            SetupCamerMatrix(playerId);
+                            SetupCameraMatrix(playerId);
 
                         int size = playerId.SetupRenderBuffer(1280, 720, 4);
                         renderer.GetRenderFrame(playerId.renderBuffer, size);
@@ -322,15 +256,11 @@ namespace Testing
         {
             get { return false; }
         }
-
-        public override IPAddress Address
+        void SetupFileToPass()
         {
-            get
-            {
-                byte[] address = { 192, 168, 0, 1 };
-                IPAddress addr = new IPAddress(address);
-                return addr;/// remoteIpEndPoint.Address;
-            }
+            fileBytes = File.ReadAllBytes("c:/temp/skull.png");
+
         }
+
     }
 }
