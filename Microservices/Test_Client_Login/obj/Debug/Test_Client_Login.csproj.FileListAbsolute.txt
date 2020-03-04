@@ -45,3 +45,14 @@ D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Clien
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.csproj.CopyComplete
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.exe
 D:\Develop\Personal\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\bin\Debug\Test_Client_Login.exe.config
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\bin\Debug\Test_Client_Login.exe
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\bin\Debug\Test_Client_Login.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\bin\Debug\CommonLibrary.dll
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\bin\Debug\NDesk.Options.dll
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\bin\Debug\CommonLibrary.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\bin\Debug\CommonLibrary.dll.config
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.csprojAssemblyReference.cache
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.csproj.CopyComplete
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.exe
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_Login\obj\Debug\Test_Client_Login.pdb

@@ -45,3 +45,14 @@ D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Te
 D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.exe
 D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.pdb
 D:\Develop\Personal\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.csprojAssemblyReference.cache
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\Test_Client_TalkToGateway.exe.config
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\Test_Client_TalkToGateway.exe
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\Test_Client_TalkToGateway.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\CommonLibrary.dll
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\NDesk.Options.dll
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\CommonLibrary.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\bin\Debug\CommonLibrary.dll.config
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.csproj.CopyComplete
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.exe
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Test_Client_TalkToGateway\obj\Debug\Test_Client_TalkToGateway.csprojAssemblyReference.cache

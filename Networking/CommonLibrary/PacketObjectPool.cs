@@ -4,11 +4,11 @@ using CommonLibrary;
 
 namespace Packets
 {
-    class PacketPool
+    internal class PacketPool
     {
-        const int initialSize = 2048;
-        Queue<BasePacket> pool;
-        PacketType type;
+        private const int initialSize = 2048;
+        private readonly Queue<BasePacket> pool;
+        private readonly PacketType type;
 
         public PacketPool(PacketType _type)
         {
@@ -84,14 +84,14 @@ namespace Packets
         }
     }
 
-    class PacketPoolManager
+    internal class PacketPoolManager
     {
-        Dictionary<PacketType, PacketPool> pools;
+        private readonly Dictionary<PacketType, PacketPool> pools;
 
         public PacketPoolManager()
         {
             pools = new Dictionary<PacketType, PacketPool>();
-            var packetTypeValues = Enum.GetValues(typeof(PacketType));
+            Array packetTypeValues = Enum.GetValues(typeof(PacketType));
             foreach (PacketType type in packetTypeValues)
             {
                 if (type == PacketType.None)
@@ -116,6 +116,15 @@ namespace Packets
                 Console.WriteLine("memory pool problem");
             }
             return false;
+        }
+    }
+
+    internal class BufferPoolManager
+    {
+        byte[] buffer;
+        BufferPoolManager()
+        {
+            buffer = new byte[32 * 1024 * 1024];// 32 megs
         }
     }
 }

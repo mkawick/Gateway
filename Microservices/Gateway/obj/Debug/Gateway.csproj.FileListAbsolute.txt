@@ -45,3 +45,14 @@ D:\Develop\Personal\Gateway\Microservices\Gateway\obj\Debug\Gateway.csprojAssemb
 D:\Develop\Personal\Gateway\Microservices\Gateway\obj\Debug\Gateway.csproj.CopyComplete
 D:\Develop\Personal\Gateway\Microservices\Gateway\obj\Debug\Gateway.exe
 D:\Develop\Personal\Gateway\Microservices\Gateway\obj\Debug\Gateway.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\bin\Debug\Gateway.exe.config
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\bin\Debug\Gateway.exe
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\bin\Debug\Gateway.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\bin\Debug\CommonLibrary.dll
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\bin\Debug\NDesk.Options.dll
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\bin\Debug\CommonLibrary.pdb
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\bin\Debug\CommonLibrary.dll.config
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\obj\Debug\Gateway.csprojAssemblyReference.cache
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\obj\Debug\Gateway.csproj.CopyComplete
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\obj\Debug\Gateway.exe
+D:\Develop\Console\Gateway2\Gateway\Microservices\Gateway\obj\Debug\Gateway.pdb
