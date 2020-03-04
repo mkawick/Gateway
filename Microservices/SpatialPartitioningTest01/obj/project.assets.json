@@ -709,11 +709,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Develop\\Console\\Gateway2\\Gateway\\Microservices\\SpatialPartitioningTest01\\SpatialPartitioningTest01.csproj",
+      "projectUniqueName": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\SpatialPartitioningTest01\\SpatialPartitioningTest01.csproj",
       "projectName": "SpatialPartitioningTest01",
-      "projectPath": "D:\\Develop\\Console\\Gateway2\\Gateway\\Microservices\\SpatialPartitioningTest01\\SpatialPartitioningTest01.csproj",
+      "projectPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\SpatialPartitioningTest01\\SpatialPartitioningTest01.csproj",
       "packagesPath": "C:\\Users\\mickey kawick\\.nuget\\packages\\",
-      "outputPath": "D:\\Develop\\Console\\Gateway2\\Gateway\\Microservices\\SpatialPartitioningTest01\\obj\\",
+      "outputPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\SpatialPartitioningTest01\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -732,8 +732,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "D:\\Develop\\Console\\Gateway2\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj": {
-              "projectPath": "D:\\Develop\\Console\\Gateway2\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj"
+            "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj": {
+              "projectPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj"
             }
           }
         }

@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CommonLibrary;
 
 namespace Packets
@@ -121,10 +123,27 @@ namespace Packets
 
     internal class BufferPoolManager
     {
+        const int numBufferSubdivisions = 1024;
         byte[] buffer;
+        BitArray trackingBits;
+        //Span<byte> span = stackalloc byte[8]; //https://ndportmann.com/system-runtime-compilerservices-unsafe/
+        // ref byte ptr = ref MemoryMarshal.GetReference(span);
         BufferPoolManager()
         {
-            buffer = new byte[32 * 1024 * 1024];// 32 megs
+            buffer = new byte[numBufferSubdivisions * NetworkConstants.dataBlobMaxPacketSize];// 1024 datablob packets
+            trackingBits = new BitArray(numBufferSubdivisions);
+        }
+
+        byte[] Allocate()
+        {
+            Debug.Assert(trackingBits.Count < numBufferSubdivisions);
+
+            return buffer;//.Skip(offset);
+            /*
+             * Unsafe.Add(ref ptr, 12) = 0x42;
+                ref int x = ref Unsafe.Add(ref ptr, 12);
+                int y = Unsafe.Add(ref ptr, 12);
+             * */
         }
     }
 }

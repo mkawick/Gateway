@@ -1,20 +1,18 @@
 ﻿
-using System.IO;
-using System.Collections.Generic;
 using Network;
 using System;
-//using Linq;
-//using StringUtils;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Packets
 {
-  /*  public class SerializableIntList : List<int>, Packets.BinarySerializable
-    { }
+    /*  public class SerializableIntList : List<int>, Packets.BinarySerializable
+      { }
 
-    public class SerializableIntList : List<int>, Packets.BinarySerializable
-    {
+      public class SerializableIntList : List<int>, Packets.BinarySerializable
+      {
 
-    }*/
+      }*/
 
 
     public class SerializedList<T> where T : IBinarySerializable, new()
@@ -64,8 +62,8 @@ namespace Packets
 
     public class TestDataBlob : IBinarySerializable
     {
-        int key;
-        int value;
+        private int key;
+        private int value;
 
         public TestDataBlob()
         {
@@ -89,11 +87,11 @@ namespace Packets
 
     public class TestPacket : BasePacket
     {
-        public override PacketType PacketType { get { return PacketType.TestPacket; } }
+        public override PacketType PacketType => PacketType.TestPacket;
 
         public SerializedList<TestDataBlob> listOfBlobs;
 
-        
+
         public TestPacket() : base()
         {
             listOfBlobs = new SerializedList<TestDataBlob>();
@@ -113,7 +111,7 @@ namespace Packets
 
     public class DataBlob : BasePacket
     {
-        public override PacketType PacketType { get { return PacketType.DataBlob; } }
+        public override PacketType PacketType => PacketType.DataBlob;
 
         public byte[] rawData;
         public short length;
@@ -129,14 +127,14 @@ namespace Packets
             totalRawDataPacketCount = 1;
         }
 
-        override public void Dispose() 
+        override public void Dispose()
         {
             rawData = null;// cleanup
         }
 
         public void Prep(byte[] bytes, int size, int offset = 0)
         {
-            if(size > NetworkConstants.dataBlobMaxPacketSize)
+            if (size > NetworkConstants.dataBlobMaxPacketSize)
             {
                 throw new Exception(string.Format("blob size too large: {0}", size));
             }
@@ -151,7 +149,7 @@ namespace Packets
 
             writer.Write(totalRawDataPacketCount);
             writer.Write(packetIndex);
-            
+
             writer.Write(length);
             writer.Write(rawData, 0, length);
         }
@@ -161,8 +159,8 @@ namespace Packets
 
             totalRawDataPacketCount = reader.ReadInt16();
             packetIndex = reader.ReadInt16();
-            
-            
+
+
             length = reader.ReadInt16();
             long remainingBuffer = reader.BaseStream.Length - reader.BaseStream.Position;
             if (remainingBuffer < length)
