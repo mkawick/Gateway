@@ -1,11 +1,19 @@
-*.pch
-*.ipch
-*.suo
-*.exe
-*.dll
-*.ide
-*.Publish.xml
-*.tmproj
+[Bb]in/
+[Oo]bj/
+[Ss]qlite3/
+App_[Dd]ata/
+
+.idea
+.vs
+
+.pch
+.ipch
+.suo
+.exe
+.dll
+.ide
+.Publish.xml
+.tmproj
 
 *.txt
 .DS_Store
@@ -14,19 +22,11 @@
 **/release/*
 *.cache
 *csproj.*
-/d/Develop/Personal/Gateway/Microservices/.vs/GatewayAndCommon/DesignTimeBuild/.dtbcache
-/d/Develop/Personal/Gateway/Microservices/.vs/GatewayAndCommon/v16/Server/sqlite3/storage.ide
-
-
 
 FileListAbsolute*
 *FileListAbsolute.txt
 
 
-bin
-Bin
-App_Data
-App_data
 
 *~
 *FileListAbsolute.txt

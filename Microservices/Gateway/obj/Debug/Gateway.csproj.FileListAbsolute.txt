@@ -30,7 +30,6 @@ D:\Develop\Console\Gateway\Gateway\Microservices\Gateway\bin\Debug\NDesk.Options
 D:\Develop\Console\Gateway\Gateway\Microservices\Gateway\bin\Debug\CommonLibrary.pdb
 D:\Develop\Console\Gateway\Gateway\Microservices\Gateway\bin\Debug\CommonLibrary.dll.config
 D:\Develop\Console\Gateway\Gateway\Microservices\Gateway\obj\Debug\Gateway.csprojAssemblyReference.cache
-D:\Develop\Console\Gateway\Gateway\Microservices\Gateway\obj\Debug\Gateway.csproj.CoreCompileInputs.cache
 D:\Develop\Console\Gateway\Gateway\Microservices\Gateway\obj\Debug\Gateway.csproj.CopyComplete
 D:\Develop\Console\Gateway\Gateway\Microservices\Gateway\obj\Debug\Gateway.exe
 D:\Develop\Console\Gateway\Gateway\Microservices\Gateway\obj\Debug\Gateway.pdb

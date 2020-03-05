@@ -31,7 +31,6 @@ D:\develop\Gateway\Microservices\SpatialPartitioningTest01\obj\Debug\netcoreapp2
 D:\develop\Gateway\Microservices\SpatialPartitioningTest01\obj\Debug\netcoreapp2.1\SpatialPartitioningTest01.dll
 D:\develop\Gateway\Microservices\SpatialPartitioningTest01\obj\Debug\netcoreapp2.1\SpatialPartitioningTest01.pdb
 D:\Develop\Console\Gateway\Gateway\Microservices\SpatialPartitioningTest01\obj\Debug\netcoreapp2.1\SpatialPartitioningTest01.csprojAssemblyReference.cache
-D:\Develop\Console\Gateway\Gateway\Microservices\SpatialPartitioningTest01\obj\Debug\netcoreapp2.1\SpatialPartitioningTest01.csproj.CoreCompileInputs.cache
 D:\Develop\Console\Gateway\Gateway\Microservices\SpatialPartitioningTest01\obj\Debug\netcoreapp2.1\SpatialPartitioningTest01.AssemblyInfoInputs.cache
 D:\Develop\Console\Gateway\Gateway\Microservices\SpatialPartitioningTest01\obj\Debug\netcoreapp2.1\SpatialPartitioningTest01.AssemblyInfo.cs
 D:\Develop\Console\Gateway\Gateway\Microservices\SpatialPartitioningTest01\obj\Debug\netcoreapp2.1\SpatialPartitioningTest01.dll

@@ -36,7 +36,6 @@ D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\CommonLib
 D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\CommonLibrary.dll.config
 D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\bin\Debug\Npgsql.xml
 D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csprojAssemblyReference.cache
-D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csproj.CoreCompileInputs.cache
 D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.csproj.CopyComplete
 D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.exe
 D:\Develop\Console\Gateway\Gateway\Microservices\LoginServer\obj\Debug\LoginServer.pdb

@@ -55,23 +55,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mkawi\\.nuget\\packages\\": {},
+    "C:\\Users\\mickey kawick\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Develop\\Personal\\Gateway\\Microservices\\Test_Direct_ServerToClient\\Test_Direct_ServerToClient.csproj",
+      "projectUniqueName": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\Test_Direct_ServerToClient\\Test_Direct_ServerToClient.csproj",
       "projectName": "Test_Direct_ServerToClient",
-      "projectPath": "D:\\Develop\\Personal\\Gateway\\Microservices\\Test_Direct_ServerToClient\\Test_Direct_ServerToClient.csproj",
-      "packagesPath": "C:\\Users\\mkawi\\.nuget\\packages\\",
-      "outputPath": "D:\\Develop\\Personal\\Gateway\\Microservices\\Test_Direct_ServerToClient\\obj\\",
+      "projectPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\Test_Direct_ServerToClient\\Test_Direct_ServerToClient.csproj",
+      "packagesPath": "C:\\Users\\mickey kawick\\.nuget\\packages\\",
+      "outputPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\Test_Direct_ServerToClient\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\mkawi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\mickey kawick\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -79,14 +79,13 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "D:\\Develop\\MOP\\renderer\\radical_stub\\build": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\Develop\\Personal\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj": {
-              "projectPath": "D:\\Develop\\Personal\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj"
+            "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj": {
+              "projectPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj"
             }
           }
         }

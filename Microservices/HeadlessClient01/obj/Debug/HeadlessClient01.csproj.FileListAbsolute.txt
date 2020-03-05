@@ -30,7 +30,6 @@ D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\NDes
 D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\CommonLibrary.pdb
 D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\bin\Debug\CommonLibrary.dll.config
 D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.csprojAssemblyReference.cache
-D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.csproj.CoreCompileInputs.cache
 D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.csproj.CopyComplete
 D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.exe
 D:\Develop\Console\Gateway\Gateway\Microservices\HeadlessClient01\obj\Debug\HeadlessClient01.pdb

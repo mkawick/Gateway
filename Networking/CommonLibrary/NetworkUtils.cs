@@ -211,6 +211,11 @@ namespace Network
 
             // Bind to the interface for a single given address or ip
             IPHostEntry ipHostInfo = Dns.GetHostEntry(name.Trim());
+            if(ipHostInfo.AddressList.Length == 0)
+            {
+                Console.WriteLine("Target IP could not be resolved. ");
+                Console.WriteLine("Check firewall settings and private/public networks");
+            }
             // TODO: probably want to allow IPv6 selection in the future
             IPAddress ip = ipHostInfo.AddressList.FirstOrDefault(e => e.AddressFamily == AddressFamily.InterNetwork);
             if (ip == null)

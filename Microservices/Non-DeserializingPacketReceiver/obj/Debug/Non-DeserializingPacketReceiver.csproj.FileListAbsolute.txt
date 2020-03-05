@@ -30,7 +30,6 @@ D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\CommonLibrary.pdb
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\bin\Debug\CommonLibrary.dll.config
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.csprojAssemblyReference.cache
-D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.csproj.CoreCompileInputs.cache
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.csproj.CopyComplete
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.exe
 D:\Develop\Console\Gateway\Gateway\Microservices\Non-DeserializingPacketReceiver\obj\Debug\Non-DeserializingPacketReceiver.pdb

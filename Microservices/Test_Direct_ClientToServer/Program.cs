@@ -27,7 +27,8 @@ namespace Test_Direct_ClientToServer
             }*/
             float sleepTime = 1000.0f / (float)CommonLibrary.Parser.FPS;
             string ipAddr = CommonLibrary.Parser.ipAddr;
-            ipAddr = "192.168.30.214";
+            //ipAddr = "192.168.30.214";
+            ipAddr = "192.168.0.28";
 
             Console.WriteLine("Client talking to Server.");
             Console.WriteLine("  Press L to login (auto login is set).");
@@ -124,7 +125,7 @@ namespace Test_Direct_ClientToServer
                 }
                 if (key == ConsoleKey.T)
                 {
-                    Console.WriteLine("Major list of crap to send");
+                    Console.WriteLine("Setting up the hopper");
                     ServerPingHopperPacket hopper = (ServerPingHopperPacket)IntrepidSerialize.TakeFromPool(PacketType.ServerPingHopper);
                     hopper.Stamp("client start");
                     testClient.Send(hopper);
