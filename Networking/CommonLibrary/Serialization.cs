@@ -10,6 +10,7 @@ namespace CommonLibrary
     {
         static Dictionary<PacketType, Func<BasePacket>> listOfConstructors = null;
         static PacketPoolManager packetPoolManager;
+        static BufferPoolManager bufferPool;
 
         static IntrepidSerialize()
         {
@@ -22,15 +23,16 @@ namespace CommonLibrary
             // anyone asks us to create packets or deserialize anything
             SetupPacketFactory();
             SetupPacketPoolManager();
+            SetupBuffers();
         }
 
+        //---------------------------- packet allocation -------------------------------
         public static BasePacket TakeFromPool(PacketType type)
         {
             return packetPoolManager.Allocate(type);
         }
         public static void ReturnToPool(BasePacket bp)
         {
-
             packetPoolManager.Deallocate(bp);
         }
         public static void ReturnToPool(List<BasePacket> packets)
@@ -55,12 +57,25 @@ namespace CommonLibrary
             newPacket.CopyFrom(packet);
             return newPacket;
         }
+        public static byte[] AllocateBuffer (int size = NetworkConstants.DataBlobMaxPacketSize)
+        {
+            return bufferPool.Allocate();
+        }
+        public static void ReturnBufferToPool(byte[] buffer)
+        {
+            bufferPool.Free(buffer);
+        }
 
+        //------------------------------------ setup -----------------------------------
         static void SetupPacketPoolManager()
         {
             if (packetPoolManager != null)
                 return;
             packetPoolManager = new PacketPoolManager();
+        }
+        static void SetupBuffers()
+        {
+            bufferPool = new BufferPoolManager();
         }
         static void SetupPacketFactory()
         {
@@ -131,6 +146,7 @@ namespace CommonLibrary
             listOfConstructors.Add(PacketType.TestPacket, () => { return new TestPacket(); });
 
         }
+        //-------------------------------- deseriialize --------------------------------
         public static List<BasePacket> Deserialize(byte[] bytes, int maxBufferSize, ref int amountRead)
         {
             List<BasePacket> storage = new List<BasePacket>();

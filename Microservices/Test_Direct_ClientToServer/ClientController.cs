@@ -20,6 +20,7 @@ namespace Testing
 
         public bool isLoggedIn = false;
         SocketWrapper socket;
+        public long startTimeMilliseconds;
 
         //------------------------------- lifetime --------------------------
         public ClientController(string serverRemoteAddr, ushort serverPort, Int64 appId = 15)
@@ -155,6 +156,8 @@ namespace Testing
                 accumulator.Clear();
                 Console.Write("Blobs received in acc {0}\n", numBlobs);
                 Console.Write("Bytes received in blob {0}\n", len);
+                var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+                Console.WriteLine("request roundtrip total time {0} ms", Timestamp - startTimeMilliseconds);
             }
             return;
         }

@@ -1,4 +1,5 @@
 ﻿
+using CommonLibrary;
 using Network;
 using System;
 using System.Collections.Generic;
@@ -114,7 +115,7 @@ namespace Packets
         public override PacketType PacketType => PacketType.DataBlob;
 
         public byte[] rawData;
-        public short length;
+        public ushort length;
         public short packetIndex;
         public short totalRawDataPacketCount;
         ///public short blobGroupId;
@@ -129,17 +130,23 @@ namespace Packets
 
         override public void Dispose()
         {
+            if (rawData != null)
+            {
+                IntrepidSerialize.ReturnBufferToPool(rawData);
+            }
             rawData = null;// cleanup
         }
 
         public void Prep(byte[] bytes, int size, int offset = 0)
         {
-            if (size > NetworkConstants.dataBlobMaxPacketSize)
+            if (size > NetworkConstants.DataBlobMaxPacketSize)
             {
                 throw new Exception(string.Format("blob size too large: {0}", size));
             }
-            length = (short)size;
-            rawData = new byte[length];
+            length = (ushort)size;
+           // rawData = new byte[length];
+            rawData = IntrepidSerialize.AllocateBuffer(NetworkConstants.DataBlobMaxPacketSize);
+
 
             Buffer.BlockCopy(bytes, offset, rawData, 0, length);
         }
@@ -161,7 +168,7 @@ namespace Packets
             packetIndex = reader.ReadInt16();
 
 
-            length = reader.ReadInt16();
+            length = reader.ReadUInt16();
             long remainingBuffer = reader.BaseStream.Length - reader.BaseStream.Position;
             if (remainingBuffer < length)
             {

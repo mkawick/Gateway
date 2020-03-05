@@ -14,6 +14,10 @@
 **/release/*
 *.cache
 *csproj.*
+/d/Develop/Personal/Gateway/Microservices/.vs/GatewayAndCommon/DesignTimeBuild/.dtbcache
+/d/Develop/Personal/Gateway/Microservices/.vs/GatewayAndCommon/v16/Server/sqlite3/storage.ide
+
+
 
 FileListAbsolute*
 *FileListAbsolute.txt

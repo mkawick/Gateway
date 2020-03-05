@@ -341,8 +341,8 @@ namespace Network
                     blob.totalRawDataPacketCount = 1;
                     blob.packetIndex = (short)index++;
                     int currentSize = size - offset;
-                    if (currentSize > NetworkConstants.dataBlobMaxPacketSize)
-                        currentSize = NetworkConstants.dataBlobMaxPacketSize;
+                    if (currentSize > NetworkConstants.DataBlobMaxPacketSize)
+                        currentSize = NetworkConstants.DataBlobMaxPacketSize;
                     //if(currentSize > size - offset)
 
                     blob.Prep(rawData, currentSize, offset);

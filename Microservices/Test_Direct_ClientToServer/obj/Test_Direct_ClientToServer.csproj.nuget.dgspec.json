@@ -1,34 +1,34 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\Test_Direct_ClientToServer\\Test_Direct_ClientToServer.csproj": {}
+    "D:\\Develop\\Personal\\Gateway\\Microservices\\Test_Direct_ClientToServer\\Test_Direct_ClientToServer.csproj": {}
   },
   "projects": {
-    "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj": {
+    "D:\\Develop\\Personal\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj",
+        "projectUniqueName": "D:\\Develop\\Personal\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj",
         "projectName": "CommonLibrary_Ext",
-        "projectPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj"
+        "projectPath": "D:\\Develop\\Personal\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj"
       },
       "frameworks": {
         "net452": {}
       }
     },
-    "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\Test_Direct_ClientToServer\\Test_Direct_ClientToServer.csproj": {
+    "D:\\Develop\\Personal\\Gateway\\Microservices\\Test_Direct_ClientToServer\\Test_Direct_ClientToServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\Test_Direct_ClientToServer\\Test_Direct_ClientToServer.csproj",
+        "projectUniqueName": "D:\\Develop\\Personal\\Gateway\\Microservices\\Test_Direct_ClientToServer\\Test_Direct_ClientToServer.csproj",
         "projectName": "Test_Direct_ClientToServer",
-        "projectPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\Test_Direct_ClientToServer\\Test_Direct_ClientToServer.csproj",
-        "packagesPath": "C:\\Users\\mickey kawick\\.nuget\\packages\\",
-        "outputPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\Test_Direct_ClientToServer\\obj\\",
+        "projectPath": "D:\\Develop\\Personal\\Gateway\\Microservices\\Test_Direct_ClientToServer\\Test_Direct_ClientToServer.csproj",
+        "packagesPath": "C:\\Users\\mkawi\\.nuget\\packages\\",
+        "outputPath": "D:\\Develop\\Personal\\Gateway\\Microservices\\Test_Direct_ClientToServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\mickey kawick\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mkawi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -36,13 +36,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "D:\\Develop\\MOP\\renderer\\radical_stub\\build": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj": {
-                "projectPath": "D:\\Develop\\Console\\Gateway\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj"
+              "D:\\Develop\\Personal\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj": {
+                "projectPath": "D:\\Develop\\Personal\\Gateway\\Microservices\\CommonLibrary\\CommonLibrary_Ext.csproj"
               }
             }
           }

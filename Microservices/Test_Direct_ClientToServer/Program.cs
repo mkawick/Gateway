@@ -184,8 +184,9 @@ namespace Test_Direct_ClientToServer
                 {
                     RequestPacket request = (RequestPacket)IntrepidSerialize.TakeFromPool(PacketType.RequestPacket);
                     request.type = RequestPacket.RequestType.RequestRenderFrame;
-
-
+                    var Timestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+                    //Console.WriteLine("request start {0} ms", Timestamp);
+                    testClient.startTimeMilliseconds = Timestamp;
                     testClient.Send(request);
                 }
             } while (key != ConsoleKey.Escape);

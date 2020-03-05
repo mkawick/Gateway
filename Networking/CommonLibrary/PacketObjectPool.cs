@@ -123,27 +123,73 @@ namespace Packets
 
     internal class BufferPoolManager
     {
-        const int numBufferSubdivisions = 1024;
-        byte[] buffer;
+        const int numBufferSubdivisions = 2048;
+        byte[][] buffer;
         BitArray trackingBits;
-        //Span<byte> span = stackalloc byte[8]; //https://ndportmann.com/system-runtime-compilerservices-unsafe/
-        // ref byte ptr = ref MemoryMarshal.GetReference(span);
-        BufferPoolManager()
+        int lastIndex = 0;
+        public BufferPoolManager()
         {
-            buffer = new byte[numBufferSubdivisions * NetworkConstants.dataBlobMaxPacketSize];// 1024 datablob packets
+            buffer = new byte[numBufferSubdivisions][];
+            for ( int i=0; i< numBufferSubdivisions; i++)
+            {
+                buffer[i] = new byte[NetworkConstants.DataBlobMaxPacketSize];
+            }
             trackingBits = new BitArray(numBufferSubdivisions);
         }
 
-        byte[] Allocate()
+        public byte[] Allocate()
         {
-            Debug.Assert(trackingBits.Count < numBufferSubdivisions);
+            //Debug.Assert(CountBitArray(trackingBits) < numBufferSubdivisions);
 
-            return buffer;//.Skip(offset);
-            /*
-             * Unsafe.Add(ref ptr, 12) = 0x42;
-                ref int x = ref Unsafe.Add(ref ptr, 12);
-                int y = Unsafe.Add(ref ptr, 12);
-             * */
+            for (int i = lastIndex; i < trackingBits.Length; i++)// optimized by starting at the last known open spot
+            {
+                if (trackingBits[i] == false)
+                {
+                    trackingBits[i] = true;
+                    lastIndex = i+1;
+                    if (lastIndex > trackingBits.Length)
+                        lastIndex = 0;
+
+                    return buffer[i];
+                }
+            }
+            for (int i = 0; i < lastIndex; i++)
+            {
+                if (trackingBits[i] == false)
+                {
+                    trackingBits[i] = true;
+                    lastIndex = i;
+                    if (lastIndex > trackingBits.Length)
+                        lastIndex = 0;
+
+                    return buffer[i];
+                }
+            }
+            return null;
+        }
+        public void Free(byte[] bufferToRelease)
+        {
+            for (int i = 0; i < numBufferSubdivisions; i++)
+            {
+                if(bufferToRelease == buffer[i])
+                {
+                    trackingBits[i] = false;
+                    return;
+                }
+            }
+            Debug.Assert(true, "BufferPoolManager::released buffer not found");
+        }
+        int CountBitArray(BitArray bitArray)
+        {
+            int count = 0;
+            foreach (bool bit in bitArray)
+            {
+                if (bit)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
     }
 }

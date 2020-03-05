@@ -12,7 +12,7 @@
     public const int defaultGatewayToClientPort = 11000;
     public const int defaultGatewayToServerPort = 11004;
 
-    public const int dataBlobMaxPacketSize = 12000;
+    public const int DataBlobMaxPacketSize = 16 * 1024;
 
     public const string defaultServerIp = "10.60.152.154"; // Simon's old PC
 }
