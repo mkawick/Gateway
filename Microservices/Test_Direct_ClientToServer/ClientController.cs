@@ -46,7 +46,8 @@ namespace Testing
         //------------------------------- socket and update ----------------
         public void Send(BasePacket bp)
         {
-            socket.Send(bp);
+            //if(socket != null)
+            socket?.Send(bp);
         }
 
         public void Update()

@@ -1,10 +1,10 @@
 [Bb]in/
 [Oo]bj/
+[Rr]elease/
 [Ss]qlite3/
 App_[Dd]ata/
 
-.idea
-.vs
+.vs/
 
 .pch
 .ipch
@@ -14,20 +14,13 @@ App_[Dd]ata/
 .ide
 .Publish.xml
 .tmproj
-
-*.txt
+.storage
+.txt
 .DS_Store
-**/Debug/*
-**/obj/*
-**/release/*
-*.cache
-*csproj.*
+.cache
+csproj.*
 
 FileListAbsolute*
 *FileListAbsolute.txt
 
-
-
-*~
-*FileListAbsolute.txt
 

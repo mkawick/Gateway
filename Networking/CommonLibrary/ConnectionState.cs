@@ -63,7 +63,7 @@ namespace CommonLibrary
                 BasePacket packet = packets.Dequeue();
                 if (packet is ServerDisconnectPacket)
                 {
-                    socket.Disconnect();
+                    socket?.Disconnect();
                     return;
                 }
 
@@ -212,7 +212,7 @@ namespace CommonLibrary
         
         public virtual void Disconnect()
         {
-            socket.Disconnect();
+            socket?.Disconnect();
         }
     }
 }
