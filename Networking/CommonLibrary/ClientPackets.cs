@@ -2,7 +2,6 @@
 using System.IO;
 namespace Packets
 {
-    
     public class ClientGameInfoRequest : BasePacket
     {
         public override PacketType PacketType { get { return PacketType.ClientGameInfoRequest; } }
@@ -64,6 +63,7 @@ namespace Packets
             Id = typedPacket.Id;
         }
     }
+	
     public class ClientDisconnectPacket : BasePacket
     {
         public override PacketType PacketType { get { return PacketType.ClientDisconnect; } }

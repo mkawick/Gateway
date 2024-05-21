@@ -7,15 +7,6 @@ using System.IO;
 
 namespace Packets
 {
-    /*  public class SerializableIntList : List<int>, Packets.BinarySerializable
-      { }
-
-      public class SerializableIntList : List<int>, Packets.BinarySerializable
-      {
-
-      }*/
-
-
     public class SerializedList<T> where T : IBinarySerializable, new()
     {
         public List<T> listOfSerializableItems = null; // assign value before writing
